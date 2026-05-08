@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — NidraPrime</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <div class="auth-page" style="background:linear-gradient(135deg,#0d1a1a,#0f2a2a);">
+
+    <div class="auth-card">
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div style="font-size:2.5rem;margin-bottom:0.5rem;">⚙️</div>
+        <div class="auth-logo-text">Nidra<span>Prime</span></div>
+        <div class="auth-subtitle" style="background:linear-gradient(135deg,var(--gold),var(--gold-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:0.08em;">
+          ADMIN PORTAL
+        </div>
+      </div>
+
+      <div style="height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:1.25rem 0;"></div>
+
+      <h2 class="auth-title">Admin Sign In</h2>
+      <p class="auth-desc">Restricted access. Authorised personnel only.</p>
+
+      <!-- Error -->
+      <div class="auth-error" id="loginError">⚠️ Invalid credentials. Please try again.</div>
+
+      <!-- Form -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="username">Admin Username</label>
+          <input
+            type="text"
+            id="username"
+            class="form-input"
+            placeholder="Enter admin username"
+            autocomplete="username"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div style="position:relative;">
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="Enter admin password"
+              autocomplete="current-password"
+              style="padding-right:48px;"
+            >
+            <button
+              type="button"
+              id="togglePwd"
+              style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-light);"
+            >👁️</button>
+          </div>
+        </div>
+
+        <button
+          class="btn btn-primary"
+          style="width:100%;justify-content:center;margin-top:0.5rem;"
+          onclick="handleAdminLogin()"
+        >
+          Access Admin Panel →
+        </button>
+      </div>
+
+      <!-- Loading -->
+      <div id="loginLoading" style="display:none;text-align:center;padding:1rem;">
+        <div class="loading-spinner" style="margin:0 auto 0.75rem;"></div>
+        <p style="font-size:0.85rem;color:var(--text-mid);">Verifying credentials...</p>
+      </div>
+
+      <div class="auth-hint" style="margin-top:1.5rem;">
+        <div style="background:var(--bg);border-radius:8px;padding:0.875rem;font-size:0.78rem;color:var(--text-mid);line-height:1.6;">
+          <strong>Demo Credentials:</strong><br>
+          Username: <code style="background:white;padding:1px 5px;border-radius:4px;">admin</code>
+          &nbsp;|&nbsp;
+          Password: <code style="background:white;padding:1px 5px;border-radius:4px;">nidraPrime@2024</code>
+        </div>
+      </div>
+
+      <div class="auth-hint">
+        <a href="/" style="color:var(--text-light);">← Back to Website</a>
+        &nbsp;|&nbsp;
+        <a href="/customer_login.html">Customer Login</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Redirect if already logged in as admin
+    if (sessionStorage.getItem('adminAuth') === 'true') {
+      window.location.href = '/admin.html';
+    }
+
+    document.getElementById('togglePwd').addEventListener('click', () => {
+      const pwd = document.getElementById('password');
+      const btn = document.getElementById('togglePwd');
+      pwd.type = pwd.type === 'password' ? 'text' : 'password';
+      btn.textContent = pwd.type === 'password' ? '👁️' : '🙈';
+    });
+
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleAdminLogin();
+    });
+    document.getElementById('username').addEventListener('keydown', e => {
+      if (e.key === 'Enter') handleAdminLogin();
+    });
+
+    async function handleAdminLogin() {
+      const username  = document.getElementById('username').value.trim();
+      const password  = document.getElementById('password').value.trim();
+      const errorBox  = document.getElementById('loginError');
+
+      errorBox.style.display = 'none';
+
+      if (!username || !password) {
+        errorBox.textContent   = '⚠️ Please enter both username and password.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      document.getElementById('loginForm').style.display    = 'none';
+      document.getElementById('loginLoading').style.display = 'block';
+
+      try {
+        const res  = await fetch('/admin-login', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ username, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          sessionStorage.setItem('adminAuth', 'true');
+          window.location.href = '/admin.html';
+        } else {
+          document.getElementById('loginForm').style.display    = 'block';
+          document.getElementById('loginLoading').style.display = 'none';
+          errorBox.textContent   = '⚠️ ' + (data.message || 'Invalid credentials.');
+          errorBox.style.display = 'block';
+        }
+      } catch {
+        document.getElementById('loginForm').style.display    = 'block';
+        document.getElementById('loginLoading').style.display = 'none';
+        errorBox.textContent   = '⚠️ Server error. Make sure the server is running.';
+        errorBox.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Login — NidraPrime</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">🛏️</div>
+      <span class="logo-text">Nidra<span>Prime</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/materials.html">Materials</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/customer_login.html" class="nav-cta">My Account</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="auth-page">
+    <div class="auth-card">
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div style="font-size:2.5rem;margin-bottom:0.5rem;">🛏️</div>
+        <div class="auth-logo-text">Nidra<span>Prime</span></div>
+        <div class="auth-subtitle">Customer Portal</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="auth-title">Welcome Back</h2>
+      <p class="auth-desc">Log in to view your purchases, warranty status, and raise service requests.</p>
+
+      <!-- Error Message -->
+      <div class="auth-error" id="loginError">
+        ⚠️ Invalid mobile number or password. Please try again.
+      </div>
+
+      <!-- Login Form -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label class="form-label" for="mobile">Registered Mobile Number</label>
+          <input
+            type="tel"
+            id="mobile"
+            class="form-input"
+            placeholder="Enter 10-digit mobile number"
+            maxlength="10"
+            autocomplete="tel"
+          >
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <div style="position:relative;">
+            <input
+              type="password"
+              id="password"
+              class="form-input"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              style="padding-right:48px;"
+            >
+            <button
+              type="button"
+              id="togglePwd"
+              style="position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:1rem;color:var(--text-light);"
+              title="Show/hide password"
+            >👁️</button>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="handleLogin()">
+          Log In to My Account
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loginLoading" style="display:none;text-align:center;padding:1rem;">
+        <div class="loading-spinner" style="margin:0 auto 0.75rem;"></div>
+        <p style="font-size:0.85rem;color:var(--text-mid);">Verifying credentials...</p>
+      </div>
+
+      <div class="auth-hint" style="margin-top:1.5rem;">
+        <div style="background:var(--bg);border-radius:8px;padding:0.875rem;font-size:0.78rem;color:var(--text-mid);line-height:1.6;">
+          <strong>Demo Credentials:</strong><br>
+          Mobile: <code style="background:white;padding:1px 5px;border-radius:4px;">9876543210</code>
+          &nbsp;|&nbsp;
+          Password: <code style="background:white;padding:1px 5px;border-radius:4px;">pass123</code>
+        </div>
+      </div>
+
+      <div class="auth-hint">
+        Not a customer yet? <a href="/contact.html">Contact us</a> to register.
+        &nbsp;|&nbsp; <a href="/admin_login.html">Admin Login</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Redirect if already logged in
+    if (localStorage.getItem('customerToken')) {
+      window.location.href = '/customer_dashboard.html';
+    }
+
+    // Navbar scroll
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    // Toggle password visibility
+    document.getElementById('togglePwd').addEventListener('click', () => {
+      const pwd = document.getElementById('password');
+      const btn = document.getElementById('togglePwd');
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        btn.textContent = '🙈';
+      } else {
+        pwd.type = 'password';
+        btn.textContent = '👁️';
+      }
+    });
+
+    // Allow Enter key to submit
+    document.getElementById('password').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+    document.getElementById('mobile').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleLogin();
+    });
+
+    async function handleLogin() {
+      const mobile   = document.getElementById('mobile').value.trim();
+      const password = document.getElementById('password').value.trim();
+      const errorBox = document.getElementById('loginError');
+      const loginBtn = document.getElementById('loginBtn');
+
+      errorBox.style.display = 'none';
+
+      if (!mobile || !password) {
+        errorBox.textContent = '⚠️ Please enter both mobile number and password.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      if (!/^\d{10}$/.test(mobile)) {
+        errorBox.textContent = '⚠️ Please enter a valid 10-digit mobile number.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      // Show loading
+      document.getElementById('loginForm').style.display = 'none';
+      document.getElementById('loginLoading').style.display = 'block';
+
+      try {
+        const res  = await fetch('/customer-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mobile, password })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          localStorage.setItem('customerToken',      data.token);
+          localStorage.setItem('customerName',       data.name);
+          localStorage.setItem('customerId',         data.customerId);
+          window.location.href = '/customer_dashboard.html';
+        } else {
+          document.getElementById('loginForm').style.display = 'block';
+          document.getElementById('loginLoading').style.display = 'none';
+          errorBox.textContent = '⚠️ ' + (data.message || 'Login failed. Please try again.');
+          errorBox.style.display = 'block';
+        }
+      } catch {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('loginLoading').style.display = 'none';
+        errorBox.textContent = '⚠️ Server error. Please make sure the server is running.';
+        errorBox.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>

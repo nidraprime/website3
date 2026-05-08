@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Dashboard — NidraPrime</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- TOP NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">🛏️</div>
+      <span class="logo-text">Nidra<span>Prime</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="#" onclick="logout()" style="color:rgba(255,100,100,0.8);">Logout</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- DASHBOARD LAYOUT -->
+  <div class="dashboard-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-user">
+        <div style="font-size:2rem;margin-bottom:0.5rem;">👤</div>
+        <div class="sidebar-user-name" id="sidebarName">Loading...</div>
+        <div class="sidebar-user-id" id="sidebarId"></div>
+      </div>
+      <ul class="sidebar-nav">
+        <li><a href="#" class="active" onclick="showSection('purchases', this)">🛏️ &nbsp;My Purchases</a></li>
+        <li><a href="#" onclick="showSection('warranty', this)">🛡️ &nbsp;Warranty Status</a></li>
+        <li><a href="#" onclick="showSection('service', this)">🔧 &nbsp;Service Requests</a></li>
+        <li><a href="/products.html">🛒 &nbsp;Browse Products</a></li>
+        <li><a href="/contact.html">📞 &nbsp;Contact Support</a></li>
+        <li><a href="#" class="logout" onclick="logout()">🚪 &nbsp;Logout</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="dashboard-main">
+
+      <!-- HEADER -->
+      <div class="dashboard-header">
+        <h1 class="dashboard-title">My Dashboard</h1>
+        <p class="dashboard-subtitle" id="dashGreeting">Welcome back!</p>
+      </div>
+
+      <!-- STATS ROW -->
+      <div class="stats-row" id="statsRow">
+        <div class="stat-card">
+          <div class="stat-label">Total Purchases</div>
+          <div class="stat-value" id="statTotal">—</div>
+          <div class="stat-sub">Mattresses owned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Warranties</div>
+          <div class="stat-value" id="statActive">—</div>
+          <div class="stat-sub">Currently valid</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Total Invested</div>
+          <div class="stat-value" id="statAmount">—</div>
+          <div class="stat-sub">In NidraPrime products</div>
+        </div>
+      </div>
+
+      <!-- ─── SECTION: MY PURCHASES ─────────────────────────────── -->
+      <div id="section-purchases" class="tab-section">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">🛏️ My Purchases</div>
+          </div>
+          <div class="table-wrap">
+            <table id="purchasesTable">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Product Name</th>
+                  <th>Price Paid</th>
+                  <th>Purchase Date</th>
+                  <th>Warranty</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="purchasesBody">
+                <tr>
+                  <td colspan="7">
+                    <div class="loading-state" style="padding:2rem;">
+                      <div class="loading-spinner"></div>
+                      <p>Loading purchases...</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SECTION: WARRANTY STATUS ──────────────────────────── -->
+      <div id="section-warranty" class="tab-section" style="display:none;">
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">🛡️ Warranty Status</div>
+          </div>
+          <div id="warrantyContent" style="padding:1.5rem;">
+            <div class="loading-state">
+              <div class="loading-spinner"></div>
+              <p>Loading warranty details...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── SECTION: SERVICE REQUESTS ─────────────────────────── -->
+      <div id="section-service" class="tab-section" style="display:none;">
+        <div class="section-card" style="margin-bottom:1.5rem;">
+          <div class="section-card-header">
+            <div class="section-card-title">🔧 Raise a Service Request</div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div id="serviceError" class="auth-error"></div>
+            <div id="serviceSuccess" style="display:none;background:#e8f5e9;border:1px solid #c8e6c9;color:#2e7d32;border-radius:8px;padding:10px 14px;font-size:0.85rem;margin-bottom:1rem;"></div>
+
+            <div class="form-group">
+              <label class="form-label">Select Purchase</label>
+              <select id="servicePurchaseSelect" class="form-select">
+                <option value="">-- Select your mattress purchase --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Describe the Issue</label>
+              <textarea
+                id="serviceIssue"
+                class="form-textarea"
+                placeholder="E.g. Sagging in the middle, cover torn, warranty claim for deformation..."
+              ></textarea>
+            </div>
+            <button class="btn btn-primary" onclick="submitServiceRequest()">Submit Service Request →</button>
+          </div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">📋 My Service History</div>
+          </div>
+          <div id="serviceHistoryContent" style="padding:1.5rem;">
+            <div class="empty-state" style="padding:2rem;">
+              <div class="empty-state-icon">🔧</div>
+              <h3>No Service Requests</h3>
+              <p>You haven't raised any service requests yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- SERVICE REQUEST MODAL TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/customer.js"></script>
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+
+</body>
+</html>

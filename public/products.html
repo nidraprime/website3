@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Mattresses — NidraPrime</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">🛏️</div>
+      <span class="logo-text">Nidra<span>Prime</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/materials.html">Materials</a></li>
+      <li><a href="/products.html" class="active">Products</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/customer_login.html" class="nav-cta">My Account</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- HERO -->
+  <section style="background:var(--teal-dark);padding:7rem 2rem 4rem;text-align:center;">
+    <div style="max-width:600px;margin:0 auto;">
+      <div class="section-tag" style="color:var(--gold);">Our Collection</div>
+      <h1 class="section-title light" style="font-size:clamp(2.2rem,4vw,3rem);margin-bottom:1rem;">
+        Find Your Perfect Mattress
+      </h1>
+      <p class="section-subtitle light" style="margin:0 auto;">
+        Every mattress engineered for orthopedic health, lasting comfort, and India's climate.
+      </p>
+    </div>
+  </section>
+
+  <!-- FILTER BAR -->
+  <section style="background:var(--white);border-bottom:1px solid var(--border);padding:1.25rem 2rem;position:sticky;top:72px;z-index:100;">
+    <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
+      <span style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-light);">Filter by:</span>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="filterBtns">
+        <button class="filter-btn active" data-cat="all">All</button>
+        <button class="filter-btn" data-cat="Orthopedic">Orthopedic</button>
+        <button class="filter-btn" data-cat="Premium">Premium</button>
+        <button class="filter-btn" data-cat="Luxury">Luxury</button>
+        <button class="filter-btn" data-cat="Essential">Essential</button>
+      </div>
+      <div style="margin-left:auto;font-size:0.82rem;color:var(--text-mid);" id="productCount"></div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS GRID -->
+  <section class="section" style="background:var(--bg);">
+    <div class="section-inner">
+      <div id="productsGrid" class="products-grid">
+        <div class="loading-state" style="grid-column:1/-1;">
+          <div class="loading-spinner"></div>
+          <p>Loading products...</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo-text">Nidra<span>Prime</span></div>
+          <p class="footer-desc">India's leading orthopedic mattress brand since 1998.</p>
+        </div>
+        <div>
+          <div class="footer-col-title">Explore</div>
+          <ul class="footer-links">
+            <li><a href="/about.html">About Us</a></li>
+            <li><a href="/materials.html">Materials</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <div class="footer-col-title">Account</div>
+          <ul class="footer-links">
+            <li><a href="/customer_login.html">Customer Login</a></li>
+          </ul>
+        </div>
+        <div></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 NidraPrime. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <style>
+    .filter-btn {
+      padding: 7px 16px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border);
+      background: var(--white);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-mid);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--teal-dark);
+      color: var(--gold);
+      border-color: var(--teal-dark);
+    }
+  </style>
+
+  <script src="/products.js"></script>
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

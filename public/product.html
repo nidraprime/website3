@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product Details — NidraPrime</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">🛏️</div>
+      <span class="logo-text">Nidra<span>Prime</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/materials.html">Materials</a></li>
+      <li><a href="/products.html" class="active">Products</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/customer_login.html" class="nav-cta">My Account</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <!-- BREADCRUMB -->
+  <div style="background:var(--bg-warm);padding:5.5rem 2rem 1rem;border-bottom:1px solid var(--border);">
+    <div style="max-width:1200px;margin:0 auto;font-size:0.8rem;color:var(--text-light);">
+      <a href="/" style="color:var(--text-light);text-decoration:none;">Home</a>
+      <span style="margin:0 8px;">›</span>
+      <a href="/products.html" style="color:var(--text-light);text-decoration:none;">Products</a>
+      <span style="margin:0 8px;">›</span>
+      <span id="breadcrumbName" style="color:var(--text-dark);">Loading...</span>
+    </div>
+  </div>
+
+  <!-- PRODUCT DETAIL -->
+  <section class="product-hero" style="padding-top:2rem;">
+    <div id="productContent">
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Loading product details...</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- RELATED / CTA -->
+  <section class="section" style="background:var(--teal-dark);padding:3rem 2rem;">
+    <div class="section-inner" style="text-align:center;">
+      <h3 style="font-family:'Playfair Display',serif;color:var(--white);font-size:1.8rem;margin-bottom:0.75rem;">Ready to sleep better?</h3>
+      <p style="color:rgba(255,255,255,0.6);margin-bottom:2rem;font-size:0.95rem;">Contact your nearest NidraPrime dealer or reach us directly.</p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <a href="/contact.html" class="btn btn-primary">Contact Us →</a>
+        <a href="/products.html" class="btn btn-outline">View All Products</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo-text">Nidra<span>Prime</span></div>
+          <p class="footer-desc">India's leading orthopedic mattress brand since 1998.</p>
+        </div>
+        <div>
+          <div class="footer-col-title">Explore</div>
+          <ul class="footer-links">
+            <li><a href="/products.html">All Products</a></li>
+            <li><a href="/about.html">About Us</a></li>
+            <li><a href="/contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2024 NidraPrime. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/product.js"></script>
+  <script>
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+  </script>
+</body>
+</html>

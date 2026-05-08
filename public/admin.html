@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel — NidraPrime</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <!-- TOP BAR -->
+  <nav class="navbar" style="background:#0d1a1a;border-bottom:1px solid rgba(230,191,163,0.2);">
+    <a href="/" class="nav-logo">
+      <div class="logo-icon">🛏️</div>
+      <span class="logo-text">Nidra<span>Prime</span></span>
+    </a>
+    <div style="display:flex;align-items:center;gap:1rem;">
+      <span style="color:var(--gold);font-size:0.75rem;font-weight:700;letter-spacing:0.1em;background:rgba(230,191,163,0.1);border:1px solid rgba(230,191,163,0.2);padding:4px 12px;border-radius:50px;">
+        ⚙️ ADMIN MODE
+      </span>
+      <button onclick="adminLogout()" class="btn btn-sm" style="background:rgba(255,100,100,0.1);border:1px solid rgba(255,100,100,0.3);color:#ff9999;font-size:0.75rem;">
+        Logout
+      </button>
+    </div>
+  </nav>
+
+  <!-- ADMIN LAYOUT -->
+  <div class="admin-layout">
+
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar">
+      <div class="admin-badge">Admin Panel</div>
+      <ul class="sidebar-nav">
+        <li><a href="#" class="active" onclick="showAdminTab('dashboard', this)">📊 &nbsp;Dashboard</a></li>
+        <li><a href="#" onclick="showAdminTab('add-customer', this)">➕ &nbsp;Add Customer</a></li>
+        <li><a href="#" onclick="showAdminTab('add-purchase', this)">🛍️ &nbsp;Add Purchase</a></li>
+        <li><a href="#" onclick="showAdminTab('customers', this)">👥 &nbsp;View Customers</a></li>
+        <li><a href="#" onclick="showAdminTab('service-requests', this)">🔧 &nbsp;Service Requests</a></li>
+        <li><a href="#" onclick="showAdminTab('products', this)">🛏️ &nbsp;View Products</a></li>
+        <li><a href="/" style="margin-top:2rem;">🌐 &nbsp;View Website</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dashboard-main">
+
+      <!-- ─── TAB: DASHBOARD ────────────────────────────────────── -->
+      <div id="tab-dashboard" class="admin-tab-section">
+        <div class="dashboard-header">
+          <h1 class="dashboard-title">Admin Dashboard</h1>
+          <p class="dashboard-subtitle">NidraPrime management overview</p>
+        </div>
+        <div class="stats-row" id="adminStats">
+          <div class="stat-card">
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-value" id="aStat1">—</div>
+            <div class="stat-sub">Registered accounts</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Total Products</div>
+            <div class="stat-value" id="aStat2">—</div>
+            <div class="stat-sub">In catalogue</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Service Requests</div>
+            <div class="stat-value" id="aStat3">—</div>
+            <div class="stat-sub">Pending & resolved</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Revenue</div>
+            <div class="stat-value" id="aStat4">—</div>
+            <div class="stat-sub">Total recorded sales</div>
+          </div>
+        </div>
+        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-top:1.5rem;">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.2rem;margin-bottom:1rem;">Quick Actions</h3>
+          <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+            <button class="btn btn-primary btn-sm" onclick="showAdminTab('add-customer',null)">➕ Add Customer</button>
+            <button class="btn btn-dark btn-sm" onclick="showAdminTab('add-purchase',null)">🛍️ Record Purchase</button>
+            <button class="btn btn-sm" style="background:var(--bg);border:1px solid var(--border);" onclick="showAdminTab('service-requests',null)">🔧 View Service Requests</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TAB: ADD CUSTOMER ─────────────────────────────────── -->
+      <div id="tab-add-customer" class="admin-tab-section" style="display:none;">
+        <div class="dashboard-header">
+          <h1 class="dashboard-title">Add New Customer</h1>
+          <p class="dashboard-subtitle">Register a new customer into the NidraPrime system.</p>
+        </div>
+        <div class="section-card" style="max-width:560px;">
+          <div class="section-card-header">
+            <div class="section-card-title">Customer Registration Form</div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div id="addCustError"  class="auth-error"></div>
+            <div id="addCustSuccess" style="display:none;background:#e8f5e9;border:1px solid #c8e6c9;color:#2e7d32;border-radius:8px;padding:10px 14px;font-size:0.85rem;margin-bottom:1rem;"></div>
+
+            <div class="form-group">
+              <label class="form-label">Full Name *</label>
+              <input type="text" id="newCustName" class="form-input" placeholder="e.g. Sunita Verma">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Mobile Number *</label>
+              <input type="tel" id="newCustMobile" class="form-input" placeholder="10-digit mobile number" maxlength="10">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Password *</label>
+              <input type="text" id="newCustPassword" class="form-input" placeholder="Set login password">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Email Address (optional)</label>
+              <input type="email" id="newCustEmail" class="form-input" placeholder="customer@email.com">
+            </div>
+            <button class="btn btn-primary" onclick="addCustomer()">Register Customer →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TAB: ADD PURCHASE ─────────────────────────────────── -->
+      <div id="tab-add-purchase" class="admin-tab-section" style="display:none;">
+        <div class="dashboard-header">
+          <h1 class="dashboard-title">Record a Purchase</h1>
+          <p class="dashboard-subtitle">Link a product purchase to an existing customer.</p>
+        </div>
+        <div class="section-card" style="max-width:560px;">
+          <div class="section-card-header">
+            <div class="section-card-title">Purchase Entry Form</div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div id="addPurError"   class="auth-error"></div>
+            <div id="addPurSuccess" style="display:none;background:#e8f5e9;border:1px solid #c8e6c9;color:#2e7d32;border-radius:8px;padding:10px 14px;font-size:0.85rem;margin-bottom:1rem;"></div>
+
+            <div class="form-group">
+              <label class="form-label">Customer ID *</label>
+              <input type="text" id="purCustomerId" class="form-input" placeholder="e.g. C001">
+              <div style="font-size:0.75rem;color:var(--text-light);margin-top:4px;">View customer IDs in the Customers tab.</div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product *</label>
+              <select id="purProductId" class="form-select">
+                <option value="">-- Select a product --</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Purchase Date *</label>
+              <input type="date" id="purDate" class="form-input">
+            </div>
+            <button class="btn btn-primary" onclick="addPurchase()">Record Purchase →</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TAB: VIEW CUSTOMERS ───────────────────────────────── -->
+      <div id="tab-customers" class="admin-tab-section" style="display:none;">
+        <div class="dashboard-header">
+          <h1 class="dashboard-title">All Customers</h1>
+          <p class="dashboard-subtitle">Registered NidraPrime customer accounts.</p>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">Customer List</div>
+            <button class="btn btn-sm btn-dark" onclick="loadCustomers()">🔄 Refresh</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Customer ID</th>
+                  <th>Full Name</th>
+                  <th>Mobile</th>
+                  <th>Email</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody id="customersTableBody">
+                <tr><td colspan="5"><div class="loading-state" style="padding:2rem;"><div class="loading-spinner"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TAB: SERVICE REQUESTS ─────────────────────────────── -->
+      <div id="tab-service-requests" class="admin-tab-section" style="display:none;">
+        <div class="dashboard-header">
+          <h1 class="dashboard-title">Service Requests</h1>
+          <p class="dashboard-subtitle">All warranty service and support requests submitted by customers.</p>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">Requests List</div>
+            <button class="btn btn-sm btn-dark" onclick="loadServiceRequests()">🔄 Refresh</button>
+          </div>
+          <div id="serviceRequestsContent">
+            <div class="loading-state" style="padding:2.5rem;"><div class="loading-spinner"></div><p>Loading...</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── TAB: VIEW PRODUCTS ────────────────────────────────── -->
+      <div id="tab-products" class="admin-tab-section" style="display:none;">
+        <div class="dashboard-header">
+          <h1 class="dashboard-title">Product Catalogue</h1>
+          <p class="dashboard-subtitle">All NidraPrime products currently in the system.</p>
+        </div>
+        <div class="section-card">
+          <div class="section-card-header">
+            <div class="section-card-title">All Products</div>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Product Name</th>
+                  <th>Category</th>
+                  <th>Price</th>
+                  <th>Warranty</th>
+                  <th>Rating</th>
+                </tr>
+              </thead>
+              <tbody id="productsAdminBody">
+                <tr><td colspan="6"><div class="loading-state" style="padding:2rem;"><div class="loading-spinner"></div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    // ─── Auth Guard ──────────────────────────────────────────────
+    if (sessionStorage.getItem('adminAuth') !== 'true') {
+      window.location.href = '/admin_login.html';
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem('adminAuth');
+      window.location.href = '/admin_login.html';
+    }
+
+    // ─── Toast ───────────────────────────────────────────────────
+    function showToast(msg, type = 'success') {
+      const t = document.getElementById('toast');
+      t.textContent  = msg;
+      t.className    = `toast ${type} show`;
+      setTimeout(() => { t.className = 'toast'; }, 3500);
+    }
+
+    function formatPrice(n) {
+      return '₹' + Number(n).toLocaleString('en-IN');
+    }
+
+    // ─── Tab Navigation ──────────────────────────────────────────
+    function showAdminTab(name, linkEl) {
+      document.querySelectorAll('.admin-tab-section').forEach(s => s.style.display = 'none');
+      const el = document.getElementById(`tab-${name}`);
+      if (el) el.style.display = 'block';
+
+      document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+      if (linkEl) linkEl.classList.add('active');
+
+      // Lazy load on tab switch
+      if (name === 'customers')        loadCustomers();
+      if (name === 'service-requests') loadServiceRequests();
+      if (name === 'products')         loadAdminProducts();
+      if (name === 'dashboard')        loadDashboardStats();
+      if (name === 'add-purchase')     loadProductsForDropdown();
+    }
+
+    // ─── Dashboard Stats ─────────────────────────────────────────
+    async function loadDashboardStats() {
+      try {
+        const [custRes, prodRes, svcRes] = await Promise.all([
+          fetch('/admin/customers'),
+          fetch('/api/products'),
+          fetch('/admin/service-requests')
+        ]);
+        const custData = await custRes.json();
+        const prodData = await prodRes.json();
+        const svcData  = await svcRes.json();
+
+        document.getElementById('aStat1').textContent = custData.customers?.length || 0;
+        document.getElementById('aStat2').textContent = prodData.products?.length  || 0;
+        document.getElementById('aStat3').textContent = svcData.requests?.length   || 0;
+        document.getElementById('aStat4').textContent = '₹1.8L+';
+      } catch {
+        // silent fail — stats are non-critical
+      }
+    }
+
+    // ─── Add Customer ────────────────────────────────────────────
+    async function addCustomer() {
+      const name     = document.getElementById('newCustName').value.trim();
+      const mobile   = document.getElementById('newCustMobile').value.trim();
+      const password = document.getElementById('newCustPassword').value.trim();
+      const email    = document.getElementById('newCustEmail').value.trim();
+      const errBox   = document.getElementById('addCustError');
+      const sucBox   = document.getElementById('addCustSuccess');
+
+      errBox.style.display = 'none';
+      sucBox.style.display = 'none';
+
+      if (!name || !mobile || !password) {
+        errBox.textContent   = '⚠️ Name, mobile, and password are required.';
+        errBox.style.display = 'block';
+        return;
+      }
+      if (!/^\d{10}$/.test(mobile)) {
+        errBox.textContent   = '⚠️ Mobile must be exactly 10 digits.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      try {
+        const res  = await fetch('/add-customer', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ name, mobile, password, email })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          sucBox.textContent   = `✅ Customer added! ID: ${data.customerId}`;
+          sucBox.style.display = 'block';
+          document.getElementById('newCustName').value     = '';
+          document.getElementById('newCustMobile').value   = '';
+          document.getElementById('newCustPassword').value = '';
+          document.getElementById('newCustEmail').value    = '';
+          showToast(`Customer ${data.customerId} created!`, 'success');
+        } else {
+          errBox.textContent   = '⚠️ ' + (data.message || 'Failed to add customer.');
+          errBox.style.display = 'block';
+        }
+      } catch {
+        errBox.textContent   = '⚠️ Server error. Please try again.';
+        errBox.style.display = 'block';
+      }
+    }
+
+    // ─── Load Products for Dropdown ──────────────────────────────
+    async function loadProductsForDropdown() {
+      try {
+        const res  = await fetch('/api/products');
+        const data = await res.json();
+        const sel  = document.getElementById('purProductId');
+        sel.innerHTML = '<option value="">-- Select a product --</option>' +
+          (data.products || []).map(p =>
+            `<option value="${p.id}">${p.name} — ${formatPrice(p.price)}</option>`
+          ).join('');
+      } catch { /* silent */ }
+    }
+
+    // Set today's date as default
+    document.addEventListener('DOMContentLoaded', () => {
+      const dateInput = document.getElementById('purDate');
+      if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+    });
+
+    // ─── Add Purchase ────────────────────────────────────────────
+    async function addPurchase() {
+      const customerId  = document.getElementById('purCustomerId').value.trim();
+      const productId   = document.getElementById('purProductId').value;
+      const purchaseDate = document.getElementById('purDate').value;
+      const errBox      = document.getElementById('addPurError');
+      const sucBox      = document.getElementById('addPurSuccess');
+
+      errBox.style.display = 'none';
+      sucBox.style.display = 'none';
+
+      if (!customerId || !productId || !purchaseDate) {
+        errBox.textContent   = '⚠️ All fields are required.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      try {
+        const res  = await fetch('/add-purchase', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ customerId, productId, purchaseDate })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          sucBox.textContent   = `✅ Purchase recorded! ID: ${data.purchaseId}`;
+          sucBox.style.display = 'block';
+          document.getElementById('purCustomerId').value  = '';
+          document.getElementById('purProductId').value   = '';
+          document.getElementById('purDate').value        = new Date().toISOString().split('T')[0];
+          showToast(`Purchase ${data.purchaseId} recorded!`, 'success');
+        } else {
+          errBox.textContent   = '⚠️ ' + (data.message || 'Failed to record purchase.');
+          errBox.style.display = 'block';
+        }
+      } catch {
+        errBox.textContent   = '⚠️ Server error. Please try again.';
+        errBox.style.display = 'block';
+      }
+    }
+
+    // ─── Load Customers ──────────────────────────────────────────
+    async function loadCustomers() {
+      const tbody = document.getElementById('customersTableBody');
+      tbody.innerHTML = `<tr><td colspan="5"><div class="loading-state" style="padding:1.5rem;"><div class="loading-spinner"></div></div></td></tr>`;
+      try {
+        const res  = await fetch('/admin/customers');
+        const data = await res.json();
+        const customers = data.customers || [];
+
+        if (!customers.length) {
+          tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state" style="padding:2rem;"><div class="empty-state-icon">👥</div><h3>No Customers</h3></div></td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = customers.map(c => `
+          <tr>
+            <td><span style="font-weight:700;color:var(--teal-dark);">${c.id}</span></td>
+            <td style="font-weight:600;">${c.name}</td>
+            <td>${c.mobile}</td>
+            <td>${c.email || '<span style="color:var(--text-light);">—</span>'}</td>
+            <td>
+              <span class="badge badge-green">Active</span>
+            </td>
+          </tr>`).join('');
+      } catch {
+        tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state" style="padding:2rem;">⚠️ Could not load customers.</div></td></tr>`;
+      }
+    }
+
+    // ─── Load Service Requests ───────────────────────────────────
+    async function loadServiceRequests() {
+      const cont = document.getElementById('serviceRequestsContent');
+      cont.innerHTML = `<div class="loading-state" style="padding:2.5rem;"><div class="loading-spinner"></div><p>Loading requests...</p></div>`;
+
+      try {
+        const res  = await fetch('/admin/service-requests');
+        const data = await res.json();
+        const reqs = data.requests || [];
+
+        if (!reqs.length) {
+          cont.innerHTML = `
+            <div class="empty-state" style="padding:3rem;">
+              <div class="empty-state-icon">🔧</div>
+              <h3>No Service Requests</h3>
+              <p>No customers have raised service requests yet.</p>
+            </div>`;
+          return;
+        }
+
+        cont.innerHTML = `
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Request ID</th>
+                  <th>Customer ID</th>
+                  <th>Purchase ID</th>
+                  <th>Product</th>
+                  <th>Issue</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${reqs.map(r => `
+                  <tr>
+                    <td style="font-weight:700;color:var(--teal-dark);">${r.id}</td>
+                    <td>${r.customerId}</td>
+                    <td>${r.purchaseId}</td>
+                    <td style="font-size:0.82rem;max-width:160px;">${r.productName}</td>
+                    <td style="font-size:0.82rem;max-width:200px;">${r.issue}</td>
+                    <td>${r.createdAt}</td>
+                    <td><span class="badge badge-orange">⏳ Pending</span></td>
+                  </tr>`).join('')}
+              </tbody>
+            </table>
+          </div>`;
+      } catch {
+        cont.innerHTML = `<div class="empty-state" style="padding:2.5rem;">⚠️ Could not load service requests.</div>`;
+      }
+    }
+
+    // ─── Load Products (Admin View) ──────────────────────────────
+    async function loadAdminProducts() {
+      const tbody = document.getElementById('productsAdminBody');
+      try {
+        const res  = await fetch('/api/products');
+        const data = await res.json();
+        const prods = data.products || [];
+
+        tbody.innerHTML = prods.map(p => `
+          <tr>
+            <td style="font-weight:700;color:var(--teal-dark);">${p.id}</td>
+            <td>
+              <div style="font-weight:600;font-size:0.88rem;">${p.name}</div>
+              <div style="font-size:0.75rem;color:var(--text-light);">${p.tagline}</div>
+            </td>
+            <td><span class="badge badge-blue">${p.category}</span></td>
+            <td style="font-weight:600;">${formatPrice(p.price)}</td>
+            <td>${p.warranty}</td>
+            <td>
+              <span style="color:#f4a535;font-size:0.9rem;">★</span>
+              <span style="font-weight:600;font-size:0.85rem;">${p.rating}</span>
+              <span style="font-size:0.75rem;color:var(--text-light);">(${p.reviews})</span>
+            </td>
+          </tr>`).join('');
+      } catch {
+        tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state" style="padding:2rem;">⚠️ Could not load products.</div></td></tr>`;
+      }
+    }
+
+    // ─── Init ────────────────────────────────────────────────────
+    loadDashboardStats();
+  </script>
+
+</body>
+</html>
