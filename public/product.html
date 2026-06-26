@@ -4,13 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Product Details — NidraPrime</title>
+  <meta name="description" content="View detailed specifications, sizing, and pricing for NidraPrime mattresses.">
+  <link rel="icon" href="/nplogodevice.png">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
   <nav class="navbar" id="navbar">
     <a href="/" class="nav-logo">
-      <div class="logo-icon">🛏️</div>
+      <img src="/nplogodevice.png" alt="NidraPrime Logo" class="brand-logo">
       <span class="logo-text">Nidra<span>Prime</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
@@ -70,6 +72,7 @@
           <ul class="footer-links">
             <li><a href="/products.html">All Products</a></li>
             <li><a href="/about.html">About Us</a></li>
+            <li><a href="/warranty.html">Warranty Terms</a></li>
             <li><a href="/contact.html">Contact</a></li>
           </ul>
         </div>
@@ -83,6 +86,7 @@
   </footer>
 
   <script src="/product.js"></script>
+  <script src="/auth-nav.js"></script>
   <script>
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);

@@ -4,6 +4,16 @@ function formatPrice(n) {
   return '₹' + n.toLocaleString('en-IN');
 }
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function calcDiscount(orig, price) {
   return Math.round((1 - price / orig) * 100);
 }
@@ -31,33 +41,46 @@ function renderProducts(products) {
   count.textContent = `Showing ${products.length} mattress${products.length !== 1 ? 'es' : ''}`;
 
   grid.innerHTML = products.map(p => {
-    const discount = calcDiscount(p.originalPrice, p.price);
+    const discount = p.discount || 0;
     return `
-      <a href="/product.html?id=${p.id}" class="product-card">
+      <a href="/product.html?id=${encodeURIComponent(p._id)}" class="product-card">
         <div class="product-card-img-wrap">
-          <img src="${p.image}" alt="${p.name}" class="product-card-img" loading="lazy">
-          <span class="product-badge">${p.category}</span>
+          <img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.name)}" class="product-card-img" loading="lazy">
+          <span class="product-badge">${escapeHtml(p.category)}</span>
           <span class="product-discount-badge">-${discount}%</span>
         </div>
         <div class="product-card-body">
-          <div class="product-card-name">${p.name}</div>
-          <div class="product-card-tagline">${p.tagline}</div>
+          <div class="product-card-name">${escapeHtml(p.name)}</div>
+          <div class="product-card-tagline">${escapeHtml(p.tagline || 'Luxury Sleep Comfort')}</div>
           <div class="product-rating">
             <span class="stars">${renderStars(p.rating)}</span>
             <span class="rating-num">${p.rating}</span>
             <span class="rating-count">(${p.reviews} reviews)</span>
           </div>
           <div class="product-meta">
-            <span class="product-meta-item">📐 ${p.size}</span>
-            <span class="product-meta-item">📏 ${p.thickness}</span>
-            <span class="product-meta-item">🛡️ ${p.warranty}</span>
+            <span class="product-meta-item">📐 ${p.size || 'Standard'}</span>
+            <span class="product-meta-item">📏 ${p.thickness || 'Premium'}</span>
+            <span class="product-meta-item">🛡️ ${p.warrantyYears}</span>
           </div>
           <div class="product-card-footer">
             <div>
               <div class="product-price">${formatPrice(p.price)}</div>
-              <div class="product-price-original">${formatPrice(p.originalPrice)}</div>
+             ${
+                p.discount > 0
+                ? `
+                <div class="product-price-original">
+                ${formatPrice(
+                Math.round(
+                            p.price /
+                           (1 - p.discount / 100)
+                          )
+                            )}
+    </div>
+  `
+  : ''
+}
             </div>
-            <button class="btn btn-dark btn-sm" onclick="event.preventDefault();window.location='/product.html?id=${p.id}'">View Details</button>
+            <button class="btn btn-dark btn-sm" onclick="event.preventDefault();window.location='/product.html?id=${encodeURIComponent(p._id)}'">View Details</button>
           </div>
         </div>
       </a>`;

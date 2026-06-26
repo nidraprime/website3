@@ -4,14 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Our Mattresses — NidraPrime</title>
+  <meta name="description" content="Browse NidraPrime's full range of orthopedic, premium, luxury, and essential mattresses. Find the perfect comfort level for better sleep.">
+  <link rel="icon" href="/nplogodevice.png">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
   <nav class="navbar" id="navbar">
     <a href="/" class="nav-logo">
-      <div class="logo-icon">🛏️</div>
-      <span class="logo-text">Nidra<span>Prime</span></span>
+  <img src="/nplogodevice.png" alt="NidraPrime Logo" class="brand-logo">
+  <span class="logo-text">Nidra<span>Prime</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
@@ -32,7 +34,7 @@
         Find Your Perfect Mattress
       </h1>
       <p class="section-subtitle light" style="margin:0 auto;">
-        Every mattress engineered for orthopedic health, lasting comfort, and India's climate.
+        Every mattress engineered for orthopaedic health, lasting comfort, and India's climate.
       </p>
     </div>
   </section>
@@ -43,7 +45,7 @@
       <span style="font-size:0.78rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-light);">Filter by:</span>
       <div style="display:flex;gap:0.5rem;flex-wrap:wrap;" id="filterBtns">
         <button class="filter-btn active" data-cat="all">All</button>
-        <button class="filter-btn" data-cat="Orthopedic">Orthopedic</button>
+        <button class="filter-btn" data-cat="Orthopedic">Orthopaedic</button>
         <button class="filter-btn" data-cat="Premium">Premium</button>
         <button class="filter-btn" data-cat="Luxury">Luxury</button>
         <button class="filter-btn" data-cat="Essential">Essential</button>
@@ -70,7 +72,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logo-text">Nidra<span>Prime</span></div>
-          <p class="footer-desc">India's leading orthopedic mattress brand since 1998.</p>
+          <p class="footer-desc">India's leading orthopaedic mattress brand since 1998.</p>
         </div>
         <div>
           <div class="footer-col-title">Explore</div>
@@ -84,6 +86,7 @@
           <div class="footer-col-title">Account</div>
           <ul class="footer-links">
             <li><a href="/customer_login.html">Customer Login</a></li>
+            <li><a href="/warranty.html">Warranty Terms</a></li>
           </ul>
         </div>
         <div></div>
@@ -115,6 +118,7 @@
   </style>
 
   <script src="/products.js"></script>
+  <script src="/auth-nav.js"></script>
   <script>
     window.addEventListener('scroll', () => {
       document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);

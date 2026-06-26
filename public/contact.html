@@ -1,18 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Contact Us — NidraPrime</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta name="description" content="Get in touch with NidraPrime for product inquiries, order support, or warranty assistance.">
+  <link rel="icon" href="/nplogodevice.png">
+  <link rel="stylesheet" href="/style.css"/>
 </head>
 <body>
 
+  <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <a href="/" class="nav-logo">
-      <div class="logo-icon">🛏️</div>
+      <img src="/nplogodevice.png" alt="NidraPrime Logo" class="brand-logo">
       <span class="logo-text">Nidra<span>Prime</span></span>
     </a>
+
     <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
       <li><a href="/about.html">About</a></li>
@@ -21,146 +25,287 @@
       <li><a href="/contact.html" class="active">Contact</a></li>
       <li><a href="/customer_login.html" class="nav-cta">My Account</a></li>
     </ul>
-    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+
+    <div class="hamburger" id="hamburger">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
   </nav>
 
   <!-- HERO -->
   <section class="contact-hero">
-    <div style="max-width:600px;margin:0 auto;">
-      <div class="section-tag" style="color:var(--gold);text-align:center;">Get in Touch</div>
-      <h1 class="section-title light" style="text-align:center;font-size:clamp(2.2rem,4vw,3rem);margin-bottom:1rem;">
-        We're Here to Help
+    <div style="max-width:700px;margin:0 auto;text-align:center;">
+
+      <div class="section-tag" style="color:var(--gold);">
+        Get In Touch
+      </div>
+
+      <h1 class="section-title light" style="margin-bottom:1rem;">
+        We're Always Here To Help
       </h1>
-      <p class="section-subtitle light" style="text-align:center;margin:0 auto;">
-        Questions about products, warranty, or service? Our team is available 6 days a week to assist you.
+
+      <p class="section-subtitle light">
+        Whether you have questions about products, orders, comfort preferences, or warranty support — our team is always happy to assist you.
+      </p>
+
+    </div>
+  </section>
+<section class="section" style="background:var(--bg-warm);">
+  <div class="section-inner">
+
+    <div class="section-header center">
+      <div class="section-tag">Quick Inquiry</div>
+      <h2 class="section-title">Tell Us What You Need</h2>
+      <p class="section-subtitle">
+        Our team will get back to you shortly.
       </p>
     </div>
-  </section>
 
-  <!-- CONTACT CARDS -->
+    <form class="inquiry-form" id="inquiryForm">
+
+      <div class="form-grid">
+
+        <input type="text" name="name" placeholder="Your Name" required>
+
+        <input type="tel" name="phone" placeholder="Phone Number" required>
+
+        <input type="text" name="city" placeholder="City / Address">
+
+        <input type="text" name="product" placeholder="Product Interested In">
+
+      </div>
+
+      <textarea
+        name="message"
+        rows="6"
+        placeholder="Write your query here..."
+        required
+      ></textarea>
+
+      <button type="submit" class="submit-btn">
+        Send Inquiry
+      </button>
+
+    </form>
+
+  </div>
+</section>
+  <!-- CONTACT SECTION -->
   <section class="section" style="background:var(--bg-warm);">
     <div class="section-inner">
+
       <div class="contact-grid">
 
+        <!-- STORE -->
         <div class="contact-card">
           <div class="contact-icon">📍</div>
-          <div class="contact-card-title">Head Office</div>
-          <p>NidraPrime Sleep Solutions Pvt. Ltd.<br>Plot No. 42, Sitapura Industrial Area<br>Jaipur, Rajasthan — 302 022</p>
+
+          <div class="contact-card-title">
+            Visit Our Store
+          </div>
+
+          <p>
+            NidraPrime<br>
+            Shop no 467 New Bhoor Colony Opposite Sector 29<br>
+            Faridabad , Haryana
+          </p>
+
+          <div class="contact-extra">
+            Mon–Sat: 9:00 AM – 9:00 PM
+          </div>
         </div>
 
+        <!-- PHONE -->
         <div class="contact-card">
           <div class="contact-icon">📞</div>
-          <div class="contact-card-title">Phone & WhatsApp</div>
-          <p>Sales: <a href="tel:+911412345678">+91 141-234-5678</a><br>
-          WhatsApp: <a href="https://wa.me/919876500000">+91 98765 00000</a><br>
-          Mon–Sat: 9:00 AM – 6:30 PM</p>
+
+          <div class="contact-card-title">
+            Phone & WhatsApp
+          </div>
+
+          <p>
+            <a href="tel:+917827647677">+91 7827647677</a><br>
+            <a href="https://wa.me/917827647677">Chat on WhatsApp</a>
+          </p>
+
+          <div class="contact-extra">
+            Product Inquiries<br>
+            Order Support<br>
+            Warranty Assistance
+          </div>
         </div>
 
+        <!-- EMAIL -->
         <div class="contact-card">
           <div class="contact-icon">📧</div>
-          <div class="contact-card-title">Email Us</div>
-          <p>Sales: <a href="mailto:sales@nidraprime.in">sales@nidraprime.in</a><br>
-          Support: <a href="mailto:support@nidraprime.in">support@nidraprime.in</a><br>
-          Dealer: <a href="mailto:dealer@nidraprime.in">dealer@nidraprime.in</a></p>
-        </div>
 
-        <div class="contact-card">
-          <div class="contact-icon">🏭</div>
-          <div class="contact-card-title">Manufacturing Unit</div>
-          <p>NidraPrime Factory<br>Bindayaka Industrial Area<br>Jaipur, Rajasthan — 302 012</p>
-        </div>
+          <div class="contact-card-title">
+            Email Support
+          </div>
 
-        <div class="contact-card">
-          <div class="contact-icon">🌐</div>
-          <div class="contact-card-title">Regional Offices</div>
-          <p><strong>Delhi NCR:</strong> +91 11-4567-8900<br>
-          <strong>Mumbai:</strong> +91 22-6789-0123<br>
-          <strong>Bengaluru:</strong> +91 80-2345-6789</p>
-        </div>
+          <p>
+            <a href="mailto:care@nidraprime.com">
+              care@nidraprime.com
+            </a>
+          </p>
 
-        <div class="contact-card">
-          <div class="contact-icon">🛠️</div>
-          <div class="contact-card-title">Warranty Service</div>
-          <p>For warranty claims and service requests, please log in to your customer account or call our service helpline:<br>
-          <a href="tel:18001234567">1800-123-4567</a> (Toll Free)</p>
+          <div class="contact-extra">
+            We usually respond within 24 hours.
+          </div>
         </div>
 
       </div>
+
     </div>
   </section>
 
-  <!-- SHOWROOMS -->
+  <!-- TRUST SECTION -->
   <section class="section">
     <div class="section-inner">
-      <div class="section-header center">
-        <div class="section-tag">Visit Us</div>
-        <h2 class="section-title">Experience Centres</h2>
-        <p class="section-subtitle">Come experience NidraPrime in person at our showrooms. Our sleep experts will guide you to the perfect mattress.</p>
+
+      <div style="
+        background:linear-gradient(135deg,var(--teal-dark),var(--teal-mid));
+        border-radius:32px;
+        padding:4rem 2rem;
+        text-align:center;
+        color:white;
+      ">
+
+        <div class="section-tag" style="color:var(--gold);">
+          NidraPrime Family
+        </div>
+
+        <h2 style="
+          font-family:'Playfair Display',serif;
+          font-size:clamp(2rem,4vw,3.5rem);
+          margin-bottom:1.5rem;
+          line-height:1.2;
+        ">
+          Comfort Backed By Care
+        </h2>
+
+        <p style="
+          max-width:760px;
+          margin:0 auto;
+          line-height:1.9;
+          color:rgba(255,255,255,0.85);
+          font-size:1.05rem;
+        ">
+          At NidraPrime, we believe customer support should feel personal, simple, and reliable — just like the comfort we aim to deliver in every mattress.
+        </p>
+
       </div>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;">
-        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;transition:var(--transition);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 60px rgba(15,42,42,0.16)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-          <div style="font-weight:700;color:var(--teal-dark);font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:0.5rem;">Jaipur Flagship</div>
-          <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:0.75rem;">M.I. Road, Near Ajmeri Gate, Jaipur</p>
-          <p style="font-size:0.8rem;color:var(--text-light);">Mon–Sun: 10 AM – 8 PM</p>
-        </div>
-        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;transition:var(--transition);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 60px rgba(15,42,42,0.16)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-          <div style="font-weight:700;color:var(--teal-dark);font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:0.5rem;">Delhi NCR</div>
-          <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:0.75rem;">Sector 18, Noida, Uttar Pradesh</p>
-          <p style="font-size:0.8rem;color:var(--text-light);">Mon–Sat: 10 AM – 8 PM</p>
-        </div>
-        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;transition:var(--transition);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 60px rgba(15,42,42,0.16)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-          <div style="font-weight:700;color:var(--teal-dark);font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:0.5rem;">Mumbai</div>
-          <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:0.75rem;">Lower Parel, Mumbai, Maharashtra</p>
-          <p style="font-size:0.8rem;color:var(--text-light);">Mon–Sat: 11 AM – 8 PM</p>
-        </div>
-        <div style="background:var(--white);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;transition:var(--transition);" onmouseover="this.style.transform='translateY(-4px)';this.style.boxShadow='0 20px 60px rgba(15,42,42,0.16)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-          <div style="font-weight:700;color:var(--teal-dark);font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:0.5rem;">Bengaluru</div>
-          <p style="font-size:0.85rem;color:var(--text-mid);margin-bottom:0.75rem;">Indiranagar, Bengaluru, Karnataka</p>
-          <p style="font-size:0.8rem;color:var(--text-light);">Mon–Sat: 10 AM – 7:30 PM</p>
-        </div>
-      </div>
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer class="footer">
+
     <div class="footer-inner">
+
       <div class="footer-grid">
+
         <div class="footer-brand">
-          <div class="footer-logo-text">Nidra<span>Prime</span></div>
-          <p class="footer-desc">India's leading orthopedic mattress brand since 1998.</p>
+          <div class="footer-logo-text">
+            Nidra<span>Prime</span>
+          </div>
+
+          <p class="footer-desc">
+            Comfort, trust, and care for every family.
+          </p>
         </div>
+
         <div>
-          <div class="footer-col-title">Products</div>
+          <div class="footer-col-title">Explore</div>
+
           <ul class="footer-links">
-            <li><a href="/products.html">All Products</a></li>
-            <li><a href="/about.html">About Us</a></li>
+            <li><a href="/products.html">Products</a></li>
             <li><a href="/materials.html">Materials</a></li>
+            <li><a href="/about.html">About Us</a></li>
           </ul>
         </div>
+
         <div>
-          <div class="footer-col-title">Account</div>
+          <div class="footer-col-title">Support</div>
+
           <ul class="footer-links">
+            <li><a href="/contact.html">Contact</a></li>
+            <li><a href="/warranty.html">Warranty Terms</a></li>
             <li><a href="/customer_login.html">Customer Login</a></li>
           </ul>
         </div>
-        <div></div>
+
       </div>
+
       <div class="footer-bottom">
-        <span>© 2024 NidraPrime. All rights reserved.</span>
-        <span>Founded by Amit Kumar Jain · Jaipur, Rajasthan</span>
+        <span>© 2024–2026 NidraPrime. All rights reserved.</span>
+        <span>Founded by Amit Kumar Jain </span>
       </div>
+
     </div>
+
   </footer>
 
+  <!-- SCRIPT -->
+  <script src="/auth-nav.js"></script>
   <script>
     window.addEventListener('scroll', () => {
-      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+      document.getElementById('navbar')
+        .classList.toggle('scrolled', window.scrollY > 50);
     });
-    document.getElementById('hamburger').addEventListener('click', () => {
-      document.getElementById('navLinks').classList.toggle('open');
-    });
+
+    document.getElementById('hamburger')
+      .addEventListener('click', () => {
+        document.getElementById('navLinks')
+          .classList.toggle('open');
+      });
   </script>
+<script>
+
+(function prefillFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  const product = params.get('product');
+  const message = params.get('message');
+
+  if (product) {
+    const productInput = document.querySelector('input[name="product"]');
+    if (productInput) productInput.value = product;
+  }
+
+  if (message) {
+    const messageBox = document.querySelector('textarea[name="message"]');
+    if (messageBox) messageBox.value = message;
+  }
+})();
+
+document.getElementById('inquiryForm')
+.addEventListener('submit', async (e) => {
+
+  e.preventDefault();
+
+  const formData = Object.fromEntries(
+    new FormData(e.target)
+  );
+
+  const response = await fetch('/send-inquiry', {
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json'
+    },
+    body:JSON.stringify(formData)
+  });
+
+  if(response.ok){
+    alert('Inquiry sent successfully!');
+    e.target.reset();
+  }else{
+    alert('Something went wrong.');
+  }
+
+});
+
+</script>
 </body>
 </html>

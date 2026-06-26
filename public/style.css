@@ -275,6 +275,10 @@ body {
   padding: 2.5rem;
   backdrop-filter: blur(20px);
   max-width: 380px;
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
   width: 100%;
 }
 
@@ -895,6 +899,43 @@ body {
   flex-shrink: 0;
 }
 
+.size-selector {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+
+.size-chip {
+  border: 1.5px solid var(--border);
+  background: var(--white);
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.size-chip:hover {
+  border-color: var(--gold-deep);
+}
+
+.size-chip.active {
+  border-color: var(--teal-dark);
+  background: var(--teal-dark);
+  color: var(--white);
+}
+
+.size-chip-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.size-chip-dim {
+  font-size: 0.68rem;
+  opacity: 0.7;
+}
+
 /* ─── ABOUT PAGE ──────────────────────────────────────────────────────────── */
 .about-hero {
   background: var(--teal-dark);
@@ -942,14 +983,17 @@ body {
 }
 
 .founder-section {
-  background: var(--gold-light);
+  background: var(--teal-dark);
 }
 
 .founder-grid {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  gap: 3rem;
-  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.founder-content {
+  max-width: 700px;
+  text-align: center;
 }
 
 .founder-avatar {
@@ -976,14 +1020,14 @@ body {
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
   font-weight: 700;
-  color: var(--text-dark);
+  color: var(--white);
   margin-bottom: 0.25rem;
 }
 
 .founder-title {
   font-size: 0.85rem;
   font-weight: 600;
-  color: var(--gold-deep);
+  color: var(--gold);
   letter-spacing: 0.06em;
   text-transform: uppercase;
   margin-bottom: 1.5rem;
@@ -991,7 +1035,7 @@ body {
 
 .founder-bio {
   font-size: 0.95rem;
-  color: var(--text-mid);
+  color: rgba(255,255,255,0.75);
   line-height: 1.8;
 }
 
@@ -1691,7 +1735,6 @@ tbody tr:hover { background: var(--bg); }
   .hero-visual { order: -1; }
   .story-grid { grid-template-columns: 1fr; gap: 2.5rem; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
-  .founder-grid { grid-template-columns: 1fr; }
   .product-detail-grid { grid-template-columns: 1fr; gap: 2rem; }
   .sidebar, .admin-sidebar { width: 220px; }
 }
@@ -1719,4 +1762,111 @@ tbody tr:hover { background: var(--bg); }
   .dashboard-main { padding: 1.5rem; }
   .footer-grid { grid-template-columns: 1fr; }
   .stats-row { grid-template-columns: 1fr 1fr; }
+}
+.brand-logo{
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  display: block;
+}
+
+.nav-logo{
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+.brand-name{
+  font-family:'Playfair Display', serif;
+  font-weight:700;
+  color:white;
+}
+
+.brand-highlight{
+  color:var(--gold);
+}
+.foam-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+  gap:2rem;
+  align-items:stretch;
+}
+
+.foam-card{
+  display:flex;
+  flex-direction:column;
+  height:100%;
+}
+
+.foam-card-body{
+  flex:1;
+}
+.inquiry-form{
+  max-width:900px;
+  margin:0 auto;
+}
+
+.form-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:1rem;
+  margin-bottom:1rem;
+}
+
+.inquiry-form input,
+.inquiry-form textarea{
+  width:100%;
+  padding:1rem 1.2rem;
+  border:1px solid var(--border);
+  border-radius:16px;
+  background:var(--white);
+  font-size:1rem;
+  font-family:inherit;
+  color:var(--text-dark);
+}
+
+.inquiry-form input:focus,
+.inquiry-form textarea:focus{
+  outline:none;
+  border-color:var(--gold);
+}
+
+.submit-btn{
+  background:var(--gold);
+  color:var(--teal-dark);
+  border:none;
+  padding:1rem 2rem;
+  border-radius:999px;
+  font-weight:700;
+  cursor:pointer;
+  transition:0.3s ease;
+  margin-top:1rem;
+}
+
+.submit-btn:hover{
+  transform:translateY(-2px);
+}
+.auth-brand{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.brand-logo{
+  width: 42px;
+  height: auto;
+  display: block;
+}
+
+.auth-logo-text{
+  display: flex;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+}
+.auth-page-logo{
+  width: 60px;
+  height: auto;
 }

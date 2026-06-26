@@ -4,14 +4,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Customer Login — NidraPrime</title>
+  <meta name="description" content="Log in to your NidraPrime customer account to view purchases, warranty status, and raise service requests.">
+  <link rel="icon" href="/nplogodevice.png">
   <link rel="stylesheet" href="/style.css">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
 
   <nav class="navbar" id="navbar">
     <a href="/" class="nav-logo">
-      <div class="logo-icon">🛏️</div>
-      <span class="logo-text">Nidra<span>Prime</span></span>
+  <img src="/nplogodevice.png" alt="NidraPrime Logo" class="brand-logo">
+  <span class="logo-text">Nidra<span>Prime</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="/">Home</a></li>
@@ -29,8 +32,12 @@
 
       <!-- Logo -->
       <div class="auth-logo">
-        <div style="font-size:2.5rem;margin-bottom:0.5rem;">🛏️</div>
-        <div class="auth-logo-text">Nidra<span>Prime</span></div>
+        <div class="auth-brand">
+  
+  <div class="auth-logo-text">
+    Nidra<span>Prime</span>
+  </div>
+</div>
         <div class="auth-subtitle">Customer Portal</div>
       </div>
 
@@ -76,12 +83,24 @@
               title="Show/hide password"
             >👁️</button>
           </div>
+          <div style="text-align:right;margin-top:6px;">
+            <a href="/forgot_password.html" style="font-size:0.8rem;color:var(--text-light);">Forgot password?</a>
+          </div>
         </div>
 
-        <button class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="handleLogin()">
+        <button type="button" class="btn btn-primary" id="loginBtn" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="handleLogin()">
           Log In to My Account
         </button>
       </div>
+
+      <div style="display:flex;align-items:center;gap:0.75rem;margin:1.25rem 0;">
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+        <span style="font-size:0.75rem;color:var(--text-light);">OR</span>
+        <div style="flex:1;height:1px;background:var(--border);"></div>
+      </div>
+
+      <div id="googleBtnContainer" style="display:flex;justify-content:center;"></div>
+      <div id="googleError" class="auth-error" style="margin-top:1rem;"></div>
 
       <!-- Loading State -->
       <div id="loginLoading" style="display:none;text-align:center;padding:1rem;">
@@ -89,18 +108,8 @@
         <p style="font-size:0.85rem;color:var(--text-mid);">Verifying credentials...</p>
       </div>
 
-      <div class="auth-hint" style="margin-top:1.5rem;">
-        <div style="background:var(--bg);border-radius:8px;padding:0.875rem;font-size:0.78rem;color:var(--text-mid);line-height:1.6;">
-          <strong>Demo Credentials:</strong><br>
-          Mobile: <code style="background:white;padding:1px 5px;border-radius:4px;">9876543210</code>
-          &nbsp;|&nbsp;
-          Password: <code style="background:white;padding:1px 5px;border-radius:4px;">pass123</code>
-        </div>
-      </div>
-
       <div class="auth-hint">
-        Not a customer yet? <a href="/contact.html">Contact us</a> to register.
-        &nbsp;|&nbsp; <a href="/admin_login.html">Admin Login</a>
+        New here? Sign in with Google above to create an account instantly, or <a href="/contact.html">contact us</a>.
       </div>
 
     </div>
@@ -141,7 +150,7 @@
       if (e.key === 'Enter') handleLogin();
     });
 
-    async function handleLogin() {
+   window.handleLogin = async function () {
       const mobile   = document.getElementById('mobile').value.trim();
       const password = document.getElementById('password').value.trim();
       const errorBox = document.getElementById('loginError');
@@ -191,6 +200,66 @@
         errorBox.style.display = 'block';
       }
     }
+
+    // ─── Google Sign-In ──────────────────────────────────────────
+    async function initGoogleSignIn() {
+      try {
+        const res    = await fetch('/api/config');
+        const config = await res.json();
+
+        if (!config.googleClientId || typeof google === 'undefined') return;
+
+        google.accounts.id.initialize({
+          client_id: config.googleClientId,
+          callback: handleGoogleCredentialResponse
+        });
+
+        google.accounts.id.renderButton(
+          document.getElementById('googleBtnContainer'),
+          { theme: 'outline', size: 'large', width: 320 }
+        );
+      } catch {
+        // Google Sign-In is optional — fail silently if config can't be loaded
+      }
+    }
+
+    async function handleGoogleCredentialResponse(response) {
+      const errorBox = document.getElementById('googleError');
+      errorBox.style.display = 'none';
+
+      try {
+        const res  = await fetch('/google-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ idToken: response.credential })
+        });
+        const data = await res.json();
+
+        if (!data.success) {
+          errorBox.textContent   = '⚠️ ' + (data.message || 'Google sign-in failed.');
+          errorBox.style.display = 'block';
+          return;
+        }
+
+        if (data.needsMobile) {
+          sessionStorage.setItem('googleSignupToken', data.signupToken);
+          sessionStorage.setItem('googleSignupName',  data.name);
+          window.location.href = '/complete_signup.html';
+          return;
+        }
+
+        localStorage.setItem('customerToken', data.token);
+        localStorage.setItem('customerName',  data.name);
+        localStorage.setItem('customerId',    data.customerId);
+        window.location.href = '/customer_dashboard.html';
+
+      } catch {
+        errorBox.textContent   = '⚠️ Server error. Please try again.';
+        errorBox.style.display = 'block';
+      }
+    }
+
+    initGoogleSignIn();
   </script>
 
 </body>

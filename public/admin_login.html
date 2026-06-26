@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Login — NidraPrime</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/nplogodevice.png">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -14,8 +16,7 @@
 
       <!-- Logo -->
       <div class="auth-logo">
-        <div style="font-size:2.5rem;margin-bottom:0.5rem;">⚙️</div>
-        <div class="auth-logo-text">Nidra<span>Prime</span></div>
+        <div class="auth-logo-text" style="position: center;">Nidra<span>Prime</span></div>
         <div class="auth-subtitle" style="background:linear-gradient(135deg,var(--gold),var(--gold-deep));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-weight:700;letter-spacing:0.08em;">
           ADMIN PORTAL
         </div>
@@ -77,18 +78,7 @@
       </div>
 
       <div class="auth-hint" style="margin-top:1.5rem;">
-        <div style="background:var(--bg);border-radius:8px;padding:0.875rem;font-size:0.78rem;color:var(--text-mid);line-height:1.6;">
-          <strong>Demo Credentials:</strong><br>
-          Username: <code style="background:white;padding:1px 5px;border-radius:4px;">admin</code>
-          &nbsp;|&nbsp;
-          Password: <code style="background:white;padding:1px 5px;border-radius:4px;">nidraPrime@2024</code>
-        </div>
-      </div>
-
-      <div class="auth-hint">
         <a href="/" style="color:var(--text-light);">← Back to Website</a>
-        &nbsp;|&nbsp;
-        <a href="/customer_login.html">Customer Login</a>
       </div>
 
     </div>
@@ -96,7 +86,7 @@
 
   <script>
     // Redirect if already logged in as admin
-    if (sessionStorage.getItem('adminAuth') === 'true') {
+    if (sessionStorage.getItem('adminToken')) {
       window.location.href = '/admin.html';
     }
 
@@ -139,7 +129,7 @@
         const data = await res.json();
 
         if (data.success) {
-          sessionStorage.setItem('adminAuth', 'true');
+          sessionStorage.setItem('adminToken', data.token);
           window.location.href = '/admin.html';
         } else {
           document.getElementById('loginForm').style.display    = 'block';

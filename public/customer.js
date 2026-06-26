@@ -16,6 +16,16 @@ function formatPrice(n) {
   return '₹' + Number(n).toLocaleString('en-IN');
 }
 
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function formatDate(dateStr) {
   if (!dateStr) return '—';
   const d = new Date(dateStr);
@@ -46,6 +56,7 @@ function init() {
     `Welcome back, ${custName}! Here's your sleep portfolio.`;
 
   loadPurchases();
+  loadServiceRequests();
 }
 
 // ─── Load Purchases ──────────────────────────────────────────────────────────
@@ -115,9 +126,9 @@ function renderPurchasesTable() {
 
     return `
       <tr>
-        <td><span style="font-weight:600;color:var(--teal-dark);">${p.id}</span></td>
+        <td><span style="font-weight:600;color:var(--teal-dark);">${escapeHtml(p.id)}</span></td>
         <td>
-          <div style="font-weight:600;color:var(--text-dark);font-size:0.88rem;">${p.productName}</div>
+          <div style="font-weight:600;color:var(--text-dark);font-size:0.88rem;">${escapeHtml(p.productName)}</div>
           <div style="font-size:0.75rem;color:var(--text-light);">Purchased: ${formatDate(p.purchaseDate)}</div>
         </td>
         <td style="font-weight:600;">${formatPrice(p.price)}</td>
@@ -131,7 +142,7 @@ function renderPurchasesTable() {
         <td>
           <button
             class="btn btn-dark btn-sm"
-            onclick="openServiceRequest('${p.id}')"
+            onclick="openServiceRequest('${escapeHtml(p.id)}')"
             ${p.warrantyStatus !== 'Valid' ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}
           >
             🔧 Service
@@ -166,8 +177,8 @@ function renderWarrantyCards() {
       <div style="background:var(--bg);border:1px solid var(--border);border-radius:12px;padding:1.5rem;margin-bottom:1rem;">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;">
           <div>
-            <div style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.05rem;color:var(--text-dark);">${p.productName}</div>
-            <div style="font-size:0.78rem;color:var(--text-light);margin-top:2px;">Order: ${p.id} · Purchased: ${formatDate(p.purchaseDate)}</div>
+            <div style="font-family:'Playfair Display',serif;font-weight:600;font-size:1.05rem;color:var(--text-dark);">${escapeHtml(p.productName)}</div>
+            <div style="font-size:0.78rem;color:var(--text-light);margin-top:2px;">Order: ${escapeHtml(p.id)} · Purchased: ${formatDate(p.purchaseDate)}</div>
           </div>
           <div style="text-align:right;">
             ${isValid
@@ -198,17 +209,63 @@ function renderWarrantyCards() {
           <span>Purchased ${formatDate(p.purchaseDate)}</span>
           <span>${pct}% remaining</span>
         </div>
+
+        ${isValid ? `
+        <div style="background:${p.warrantyPhase === 'Full Warranty' ? '#e8f5e9' : '#fff8e1'};border:1px solid ${p.warrantyPhase === 'Full Warranty' ? '#c8e6c9' : '#ffe082'};border-radius:10px;padding:0.875rem 1rem;margin-top:1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.75rem;">
+          <div>
+            <div style="font-size:0.72rem;font-weight:700;letter-spacing:0.06em;color:${p.warrantyPhase === 'Full Warranty' ? '#2e7d32' : '#a16207'};">
+              ${p.warrantyPhase === 'Full Warranty' ? '🛡️ FULL WARRANTY — FREE REPLACEMENT' : '📉 PRO-RATA PERIOD'}
+            </div>
+            <div style="font-size:0.78rem;color:var(--text-mid);margin-top:2px;">
+              ${p.warrantyPhase === 'Full Warranty'
+                ? 'Eligible for free replacement on manufacturing defects.'
+                : `Depreciating at ${formatPrice(p.monthlyDepreciation)}/month since month 13. Depreciated so far: ${formatPrice(p.depreciatedAmount)}.`
+              }
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-size:0.66rem;color:var(--text-light);text-transform:uppercase;letter-spacing:0.06em;">Current Mattress Value</div>
+            <div style="font-weight:700;font-size:1.1rem;color:var(--teal-dark);">${formatPrice(p.currentValue)}</div>
+          </div>
+        </div>` : ''}
+
+        <div style="margin-top:0.75rem;">
+          <a href="/warranty.html" style="font-size:0.75rem;color:var(--gold-deep);">View Pro-Rata Warranty Terms →</a>
+        </div>
       </div>`;
   }).join('');
 }
 
 // ─── Service Request ─────────────────────────────────────────────────────────
+async function loadServiceRequests() {
+
+  try {
+
+    const res = await fetch('/my-service-requests', {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    const data = await res.json();
+
+    if (!data.success) return;
+
+    serviceRequests = data.requests || [];
+
+    renderServiceHistory();
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
 function populateServiceDropdown() {
   const sel   = document.getElementById('servicePurchaseSelect');
   const valid = purchasesData.filter(p => p.warrantyStatus === 'Valid');
 
   sel.innerHTML = '<option value="">-- Select your mattress purchase --</option>' +
-    valid.map(p => `<option value="${p.id}">${p.id} — ${p.productName}</option>`).join('');
+    valid.map(p => `<option value="${escapeHtml(p.id)}">${escapeHtml(p.id)} — ${escapeHtml(p.productName)}</option>`).join('');
 }
 
 function openServiceRequest(purchaseId) {
@@ -268,13 +325,14 @@ async function submitServiceRequest() {
       showToast(`Request ${data.requestId} submitted successfully!`, 'success');
 
       // Add to local service history
-      serviceRequests.push({
+      await loadServiceRequests();
+      /*serviceRequests.push({
         id:          data.requestId,
         purchaseId,
         issue,
         status:      'Pending',
         createdAt:   new Date().toISOString().split('T')[0]
-      });
+      });*/
       renderServiceHistory();
     } else {
       errBox.textContent   = '⚠️ ' + (data.message || 'Could not submit request.');
@@ -316,11 +374,11 @@ function renderServiceHistory() {
         <tbody>
           ${serviceRequests.map(r => `
             <tr>
-              <td style="font-weight:700;color:var(--teal-dark);">${r.id}</td>
-              <td>${r.purchaseId}</td>
-              <td style="max-width:240px;font-size:0.83rem;">${r.issue}</td>
-              <td>${r.createdAt}</td>
-              <td><span class="badge badge-orange">⏳ Pending</span></td>
+              <td style="font-weight:700;color:var(--teal-dark);">${escapeHtml(r.requestId)}</td>
+              <td>${escapeHtml(r.purchaseId)}</td>
+              <td style="max-width:240px;font-size:0.83rem;">${escapeHtml(r.issue)}</td>
+              <td>${formatDate(r.createdAt)}</td>
+              <td><span class="badge badge-orange"> ${escapeHtml(r.status)}</span></td>
             </tr>`).join('')}
         </tbody>
       </table>

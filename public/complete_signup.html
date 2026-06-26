@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Complete Sign Up — NidraPrime</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/nplogodevice.png">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-logo">
+      <img src="/nplogodevice.png" alt="NidraPrime Logo" class="brand-logo">
+      <span class="logo-text">Nidra<span>Prime</span></span>
+    </a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="/">Home</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/materials.html">Materials</a></li>
+      <li><a href="/products.html">Products</a></li>
+      <li><a href="/contact.html">Contact</a></li>
+      <li><a href="/customer_login.html" class="nav-cta">My Account</a></li>
+    </ul>
+    <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+  </nav>
+
+  <div class="auth-page">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <div class="auth-brand">
+          <div class="auth-logo-text">
+            Nidra<span>Prime</span>
+          </div>
+        </div>
+        <div class="auth-subtitle">Customer Portal</div>
+      </div>
+
+      <div class="divider"></div>
+
+      <h2 class="auth-title">Almost There, <span id="welcomeName"></span></h2>
+      <p class="auth-desc">One last step — add your mobile number to finish setting up your account.</p>
+
+      <div class="auth-error" id="formError"></div>
+
+      <div id="signupForm">
+        <div class="form-group">
+          <label class="form-label" for="mobile">Mobile Number</label>
+          <input
+            type="tel"
+            id="mobile"
+            class="form-input"
+            placeholder="Enter 10-digit mobile number"
+            maxlength="10"
+            autocomplete="tel"
+          >
+        </div>
+
+        <button type="button" class="btn btn-primary" id="submitBtn" style="width:100%;justify-content:center;margin-top:0.5rem;" onclick="handleSubmit()">
+          Complete Sign Up →
+        </button>
+      </div>
+
+      <div class="auth-hint">
+        <a href="/customer_login.html">← Back to Login</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    const signupToken = sessionStorage.getItem('googleSignupToken');
+    const signupName  = sessionStorage.getItem('googleSignupName') || '';
+
+    if (!signupToken) {
+      window.location.href = '/customer_login.html';
+    }
+
+    document.getElementById('welcomeName').textContent = signupName;
+
+    window.addEventListener('scroll', () => {
+      document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 50);
+    });
+    document.getElementById('hamburger').addEventListener('click', () => {
+      document.getElementById('navLinks').classList.toggle('open');
+    });
+
+    document.getElementById('mobile').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') handleSubmit();
+    });
+
+    async function handleSubmit() {
+      const mobile   = document.getElementById('mobile').value.trim();
+      const errorBox = document.getElementById('formError');
+      const btn      = document.getElementById('submitBtn');
+
+      errorBox.style.display = 'none';
+
+      if (!/^\d{10}$/.test(mobile)) {
+        errorBox.textContent   = '⚠️ Please enter a valid 10-digit mobile number.';
+        errorBox.style.display = 'block';
+        return;
+      }
+
+      btn.disabled    = true;
+      btn.textContent = 'Creating account...';
+
+      try {
+        const res  = await fetch('/complete-google-signup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ signupToken, mobile })
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          sessionStorage.removeItem('googleSignupToken');
+          sessionStorage.removeItem('googleSignupName');
+          localStorage.setItem('customerToken', data.token);
+          localStorage.setItem('customerName',  data.name);
+          localStorage.setItem('customerId',    data.customerId);
+          window.location.href = '/customer_dashboard.html';
+        } else {
+          errorBox.textContent   = '⚠️ ' + (data.message || 'Could not complete sign up.');
+          errorBox.style.display = 'block';
+        }
+      } catch {
+        errorBox.textContent   = '⚠️ Server error. Please try again.';
+        errorBox.style.display = 'block';
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = 'Complete Sign Up →';
+      }
+    }
+  </script>
+
+</body>
+</html>

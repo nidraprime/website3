@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Panel — NidraPrime</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" href="/nplogodevice.png">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -11,7 +13,7 @@
   <!-- TOP BAR -->
   <nav class="navbar" style="background:#0d1a1a;border-bottom:1px solid rgba(230,191,163,0.2);">
     <a href="/" class="nav-logo">
-      <div class="logo-icon">🛏️</div>
+      <img src="/nplogodevice.png" alt="NidraPrime Logo" class="brand-logo">
       <span class="logo-text">Nidra<span>Prime</span></span>
     </a>
     <div style="display:flex;align-items:center;gap:1rem;">
@@ -34,7 +36,9 @@
         <li><a href="#" class="active" onclick="showAdminTab('dashboard', this)">📊 &nbsp;Dashboard</a></li>
         <li><a href="#" onclick="showAdminTab('add-customer', this)">➕ &nbsp;Add Customer</a></li>
         <li><a href="#" onclick="showAdminTab('add-purchase', this)">🛍️ &nbsp;Add Purchase</a></li>
+        <li><a href="#" onclick="showAdminTab('add-product', this)">🛒 &nbsp;Add Product</a></li>
         <li><a href="#" onclick="showAdminTab('customers', this)">👥 &nbsp;View Customers</a></li>
+        <li><a href="#"onclick="showAdminTab('purchases', this)">📦 &nbsp;View Purchases</a></li>
         <li><a href="#" onclick="showAdminTab('service-requests', this)">🔧 &nbsp;Service Requests</a></li>
         <li><a href="#" onclick="showAdminTab('products', this)">🛏️ &nbsp;View Products</a></li>
         <li><a href="/" style="margin-top:2rem;">🌐 &nbsp;View Website</a></li>
@@ -77,6 +81,7 @@
           <div style="display:flex;gap:1rem;flex-wrap:wrap;">
             <button class="btn btn-primary btn-sm" onclick="showAdminTab('add-customer',null)">➕ Add Customer</button>
             <button class="btn btn-dark btn-sm" onclick="showAdminTab('add-purchase',null)">🛍️ Record Purchase</button>
+            <button class="btn btn-dark btn-sm" onclick="showAdminTab('add-product',null)">🛒 Add Product</button>
             <button class="btn btn-sm" style="background:var(--bg);border:1px solid var(--border);" onclick="showAdminTab('service-requests',null)">🔧 View Service Requests</button>
           </div>
         </div>
@@ -151,6 +156,91 @@
         </div>
       </div>
 
+      <!-- ─── TAB: ADD PRODUCT ──────────────────────────────────── -->
+      <div id="tab-add-product" class="admin-tab-section" style="display:none;">
+        <div class="dashboard-header">
+          <h1 class="dashboard-title">Add New Product</h1>
+          <p class="dashboard-subtitle">Add a new mattress or product to the NidraPrime catalogue.</p>
+        </div>
+        <div class="section-card" style="max-width:640px;">
+          <div class="section-card-header">
+            <div class="section-card-title">Product Details Form</div>
+          </div>
+          <div style="padding:1.5rem;">
+            <div id="addProdError" class="auth-error"></div>
+            <div id="addProdSuccess" style="display:none;background:#e8f5e9;border:1px solid #c8e6c9;color:#2e7d32;border-radius:8px;padding:10px 14px;font-size:0.85rem;margin-bottom:1rem;"></div>
+
+            <div class="form-group">
+              <label class="form-label">Product Name *</label>
+              <input type="text" id="addProdName" class="form-input" placeholder="e.g. NidraPrime Orthopedic Plus">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Tagline</label>
+              <input type="text" id="addProdTagline" class="form-input" placeholder="e.g. Engineered for spinal alignment">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Category *</label>
+              <select id="addProdCategory" class="form-select">
+                <option value="">-- Select a category --</option>
+                <option value="Orthopedic">Orthopaedic</option>
+                <option value="Premium">Premium</option>
+                <option value="Luxury">Luxury</option>
+                <option value="Essential">Essential</option>
+              </select>
+            </div>
+            <div style="display:flex;gap:1rem;">
+              <div class="form-group" style="flex:1;">
+                <label class="form-label">Price (₹) *</label>
+                <input type="number" id="addProdPrice" class="form-input" min="1" placeholder="e.g. 24999">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label class="form-label">Discount %</label>
+                <input type="number" id="addProdDiscount" class="form-input" min="0" max="100" value="0">
+              </div>
+            </div>
+            <div style="display:flex;gap:1rem;">
+              <div class="form-group" style="flex:1;">
+                <label class="form-label">Warranty (Years)</label>
+                <input type="number" id="addProdWarranty" class="form-input" min="0" value="10">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label class="form-label">Stock</label>
+                <input type="number" id="addProdStock" class="form-input" min="0" value="0">
+              </div>
+            </div>
+            <div style="display:flex;gap:1rem;">
+              <div class="form-group" style="flex:1;">
+                <label class="form-label">Base Width (in) *</label>
+                <input type="number" id="addProdBaseWidth" class="form-input" min="1" value="60">
+              </div>
+              <div class="form-group" style="flex:1;">
+                <label class="form-label">Base Length (in) *</label>
+                <input type="number" id="addProdBaseLength" class="form-input" min="1" value="78">
+              </div>
+            </div>
+            <div style="font-size:0.75rem;color:var(--text-light);margin:-0.75rem 0 1.25rem;">The price above is for this size. Other sizes on the product page are scaled proportionally by area.</div>
+            <div class="form-group">
+              <label class="form-label">Description</label>
+              <textarea id="addProdDescription" class="form-input" rows="3" placeholder="Short product description"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Key Features (one per line)</label>
+              <textarea id="addProdFeatures" class="form-input" rows="3" placeholder="e.g. Memory foam top layer&#10;Breathable cover&#10;Anti-microbial treatment"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Foam Layer Composition (one per line)</label>
+              <textarea id="addProdLayers" class="form-input" rows="3" placeholder="e.g. 2in Memory foam&#10;4in High-density support foam&#10;1in Base foam"></textarea>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Product Image</label>
+              <input type="file" id="addProdImage" accept="image/*" onchange="previewImage(this, 'addProdImagePreview')">
+              <img id="addProdImagePreview" style="display:none;margin-top:10px;max-width:140px;border-radius:8px;border:1px solid var(--border);">
+            </div>
+            <button class="btn btn-primary" id="addProdSubmitBtn" onclick="addProduct()">Add Product →</button>
+          </div>
+        </div>
+      </div>
+
       <!-- ─── TAB: VIEW CUSTOMERS ───────────────────────────────── -->
       <div id="tab-customers" class="admin-tab-section" style="display:none;">
         <div class="dashboard-header">
@@ -170,7 +260,7 @@
                   <th>Full Name</th>
                   <th>Mobile</th>
                   <th>Email</th>
-                  <th>Action</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="customersTableBody">
@@ -180,7 +270,77 @@
           </div>
         </div>
       </div>
+      <!-- ─── TAB: VIEW Purchases───────────────────────────────── -->
+<div id="tab-purchases"
+     class="admin-tab-section"
+     style="display:none;">
 
+  <div class="dashboard-header">
+
+    <h1 class="dashboard-title">
+      Purchase Management
+    </h1>
+
+    <p class="dashboard-subtitle">
+      All recorded customer purchases
+    </p>
+
+  </div>
+
+  <div class="section-card">
+
+    <div class="section-card-header">
+
+      <div class="section-card-title">
+        Purchase Records
+      </div>
+
+      <button
+        class="btn btn-sm btn-dark"
+        onclick="loadPurchases()"
+      >
+        🔄 Refresh
+      </button>
+
+    </div>
+
+    <div class="table-wrap">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Order ID</th>
+
+            <th>Customer</th>
+
+            <th>Product</th>
+
+            <th>Price</th>
+
+            <th>Purchase Date</th>
+
+            <th>Warranty</th>
+
+            <th>Actions</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody id="purchaseTableBody">
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>
       <!-- ─── TAB: SERVICE REQUESTS ─────────────────────────────── -->
       <div id="tab-service-requests" class="admin-tab-section" style="display:none;">
         <div class="dashboard-header">
@@ -206,7 +366,27 @@
         </div>
         <div class="section-card">
           <div class="section-card-header">
-            <div class="section-card-title">All Products</div>
+            <div
+  style="
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    width:100%;
+  "
+>
+
+  <div class="section-card-title">
+    All Products
+  </div>
+
+  <button
+    class="btn btn-primary btn-sm"
+    onclick="showAdminTab('add-product', null)"
+  >
+    ➕ Add Product
+  </button>
+
+</div>
           </div>
           <div class="table-wrap">
             <table>
@@ -217,7 +397,7 @@
                   <th>Category</th>
                   <th>Price</th>
                   <th>Warranty</th>
-                  <th>Rating</th>
+                  <th>Actions</th>
                 </tr>
               </thead>
               <tbody id="productsAdminBody">
@@ -236,14 +416,40 @@
 
   <script>
     // ─── Auth Guard ──────────────────────────────────────────────
-    if (sessionStorage.getItem('adminAuth') !== 'true') {
+    if (!sessionStorage.getItem('adminToken')) {
       window.location.href = '/admin_login.html';
     }
 
     function adminLogout() {
-      sessionStorage.removeItem('adminAuth');
+      sessionStorage.removeItem('adminToken');
       window.location.href = '/admin_login.html';
     }
+
+    // ─── Attach admin token to every /admin/* request, and bounce to
+    // login if the token is missing/expired ───────────────────────
+    (function () {
+      const nativeFetch = window.fetch;
+      window.fetch = function (url, options = {}) {
+        const isAdminUrl = typeof url === 'string' && url.startsWith('/admin/');
+
+        if (isAdminUrl) {
+          options = {
+            ...options,
+            headers: {
+              ...(options.headers || {}),
+              'Authorization': `Bearer ${sessionStorage.getItem('adminToken')}`
+            }
+          };
+        }
+        return nativeFetch(url, options).then(res => {
+          if (isAdminUrl && (res.status === 401 || res.status === 403)) {
+            sessionStorage.removeItem('adminToken');
+            window.location.href = '/admin_login.html';
+          }
+          return res;
+        });
+      };
+    })();
 
     // ─── Toast ───────────────────────────────────────────────────
     function showToast(msg, type = 'success') {
@@ -257,6 +463,16 @@
       return '₹' + Number(n).toLocaleString('en-IN');
     }
 
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+    }
+
     // ─── Tab Navigation ──────────────────────────────────────────
     function showAdminTab(name, linkEl) {
       document.querySelectorAll('.admin-tab-section').forEach(s => s.style.display = 'none');
@@ -268,28 +484,342 @@
 
       // Lazy load on tab switch
       if (name === 'customers')        loadCustomers();
+      if (name === 'purchases')        loadPurchases();
       if (name === 'service-requests') loadServiceRequests();
       if (name === 'products')         loadAdminProducts();
       if (name === 'dashboard')        loadDashboardStats();
       if (name === 'add-purchase')     loadProductsForDropdown();
+      if (name === 'add-product')      resetAddProductForm();
+    }
+async function viewPurchase(id) {
+
+  try {
+
+    const res = await fetch(`/admin/purchase/${id}`);
+    const data = await res.json();
+
+    if (!data.success) {
+      return alert('Purchase not found');
     }
 
+    const p = data.purchase;
+
+    alert(
+`Order ID: ${p.orderId}
+
+Product: ${p.productName}
+
+Price: ₹${p.price}
+
+Warranty: ${p.warrantyYears} Years
+
+Purchase Date:
+${new Date(p.purchaseDate).toLocaleDateString()}`
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert('Error loading purchase');
+  }
+}
+async function deletePurchase(id) {
+
+  if (
+    !confirm(
+      'Delete this purchase?'
+    )
+  ) return;
+
+  try {
+
+    const res =
+      await fetch(
+
+        `/admin/delete-purchase/${id}`,
+
+        {
+          method: 'DELETE'
+        }
+      );
+
+    const data =
+      await res.json();
+
+    if (data.success) {
+
+      showToast(
+        'Purchase Deleted',
+        'success'
+      );
+
+      loadPurchases();
+    }
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
+async function viewCustomer(id) {
+
+  try {
+
+    const res =
+      await fetch(`/admin/customer/${id}`);
+
+    const data =
+      await res.json();
+
+    if (!data.success) return;
+
+    const customer =
+      data.customer;
+
+    alert(
+
+`Customer ID: ${customer.customerId}
+
+Name: ${customer.name}
+
+Mobile: ${customer.mobile}
+
+Email: ${customer.email || 'N/A'}
+
+Purchases: ${data.purchases.length}
+
+Service Requests: ${data.requests.length}`
+
+    );
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
+
+
+function closeEditCustomerModal() {
+
+  document.getElementById(
+    'editCustomerModal'
+  ).style.display = 'none';
+}
+
+async function openResetPasswordModal(id) {
+  document.getElementById('resetPwdCustomerId').value = id;
+  document.getElementById('resetPwdCustomerName').textContent = 'Setting a new password for this customer.';
+
+  try {
+    const res  = await fetch(`/admin/customer/${id}`);
+    const data = await res.json();
+    if (data.success && data.customer) {
+      document.getElementById('resetPwdCustomerName').textContent = `Setting a new password for ${data.customer.name}.`;
+    }
+  } catch {
+    // keep the generic fallback text
+  }
+
+  document.getElementById('resetPwdNewPassword').value = '';
+  document.getElementById('resetPwdError').style.display = 'none';
+  document.getElementById('resetPasswordModal').style.display = 'flex';
+}
+
+function closeResetPasswordModal() {
+  document.getElementById('resetPasswordModal').style.display = 'none';
+}
+
+async function submitResetPassword() {
+  const id          = document.getElementById('resetPwdCustomerId').value;
+  const newPassword = document.getElementById('resetPwdNewPassword').value;
+  const errBox       = document.getElementById('resetPwdError');
+
+  errBox.style.display = 'none';
+
+  if (newPassword.length < 6) {
+    errBox.textContent   = '⚠️ Password must be at least 6 characters long.';
+    errBox.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res  = await fetch(`/admin/reset-customer-password/${id}`, {
+      method:  'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ newPassword })
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      showToast('Password reset successfully', 'success');
+      closeResetPasswordModal();
+    } else {
+      errBox.textContent   = '⚠️ ' + (data.message || 'Could not reset password.');
+      errBox.style.display = 'block';
+    }
+  } catch {
+    errBox.textContent   = '⚠️ Server error. Please try again.';
+    errBox.style.display = 'block';
+  }
+}
+
+
+async function editCustomer(id) {
+
+  try {
+
+    const res =
+      await fetch(`/admin/customer/${id}`);
+
+    const data =
+      await res.json();
+
+    const c =
+      data.customer;
+
+    document.getElementById(
+      'editCustomerId'
+    ).value = c._id;
+
+    document.getElementById(
+      'editCustomerName'
+    ).value = c.name || '';
+
+    document.getElementById(
+      'editCustomerMobile'
+    ).value = c.mobile || '';
+
+    document.getElementById(
+      'editCustomerEmail'
+    ).value = c.email || '';
+
+    document.getElementById(
+      'editCustomerModal'
+    ).style.display = 'flex';
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
+async function saveCustomerChanges() {
+
+  try {
+
+    const id =
+      document.getElementById(
+        'editCustomerId'
+      ).value;
+
+    const payload = {
+
+      name:
+        document.getElementById(
+          'editCustomerName'
+        ).value,
+
+      mobile:
+        document.getElementById(
+          'editCustomerMobile'
+        ).value,
+
+      email:
+        document.getElementById(
+          'editCustomerEmail'
+        ).value
+    };
+
+    const res =
+      await fetch(
+
+        `/admin/update-customer/${id}`,
+
+        {
+
+          method:'PUT',
+
+          headers:{
+            'Content-Type':
+              'application/json'
+          },
+
+          body:
+            JSON.stringify(payload)
+        }
+      );
+
+    const data =
+      await res.json();
+
+    if (data.success) {
+
+      showToast(
+        'Customer Updated',
+        'success'
+      );
+
+      closeEditCustomerModal();
+
+      loadCustomers();
+    }
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
+async function deleteCustomer(id) {
+
+  if (
+    !confirm(
+      'Delete this customer?'
+    )
+  ) return;
+
+  const res =
+    await fetch(
+
+      `/admin/delete-customer/${id}`,
+
+      {
+        method:'DELETE'
+      }
+    );
+
+  const data =
+    await res.json();
+
+  if (data.success) {
+
+    showToast(
+      'Customer Deleted',
+      'success'
+    );
+
+    loadCustomers();
+  }
+}
     // ─── Dashboard Stats ─────────────────────────────────────────
     async function loadDashboardStats() {
       try {
-        const [custRes, prodRes, svcRes] = await Promise.all([
+        const [custRes, prodRes, svcRes, purRes] = await Promise.all([
           fetch('/admin/customers'),
           fetch('/api/products'),
-          fetch('/admin/service-requests')
+          fetch('/admin/service-requests'),
+          fetch('/admin/purchases')
         ]);
         const custData = await custRes.json();
         const prodData = await prodRes.json();
         const svcData  = await svcRes.json();
+        const purData  = await purRes.json();
+
+        const revenue = (purData.purchases || []).reduce((sum, p) => sum + Number(p.price || 0), 0);
 
         document.getElementById('aStat1').textContent = custData.customers?.length || 0;
         document.getElementById('aStat2').textContent = prodData.products?.length  || 0;
         document.getElementById('aStat3').textContent = svcData.requests?.length   || 0;
-        document.getElementById('aStat4').textContent = '₹1.8L+';
+        document.getElementById('aStat4').textContent = formatPrice(revenue);
       } catch {
         // silent fail — stats are non-critical
       }
@@ -319,7 +849,7 @@
       }
 
       try {
-        const res  = await fetch('/add-customer', {
+        const res  = await fetch('/admin/add-customer', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({ name, mobile, password, email })
@@ -352,7 +882,7 @@
         const sel  = document.getElementById('purProductId');
         sel.innerHTML = '<option value="">-- Select a product --</option>' +
           (data.products || []).map(p =>
-            `<option value="${p.id}">${p.name} — ${formatPrice(p.price)}</option>`
+            `<option value="${escapeHtml(p.productId)}">${escapeHtml(p.name)} — ${formatPrice(p.price)}</option>`
           ).join('');
       } catch { /* silent */ }
     }
@@ -381,7 +911,12 @@
       }
 
       try {
-        const res  = await fetch('/add-purchase', {
+        console.log({
+  customerId,
+  productId,
+  purchaseDate
+});
+        const res  = await fetch('/admin/add-purchase', {
           method:  'POST',
           headers: { 'Content-Type': 'application/json' },
           body:    JSON.stringify({ customerId, productId, purchaseDate })
@@ -413,6 +948,7 @@
         const res  = await fetch('/admin/customers');
         const data = await res.json();
         const customers = data.customers || [];
+        console.log(JSON.stringify(customers,null,2));
 
         if (!customers.length) {
           tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state" style="padding:2rem;"><div class="empty-state-icon">👥</div><h3>No Customers</h3></div></td></tr>`;
@@ -421,19 +957,331 @@
 
         tbody.innerHTML = customers.map(c => `
           <tr>
-            <td><span style="font-weight:700;color:var(--teal-dark);">${c.id}</span></td>
-            <td style="font-weight:600;">${c.name}</td>
-            <td>${c.mobile}</td>
-            <td>${c.email || '<span style="color:var(--text-light);">—</span>'}</td>
+            <td><span style="font-weight:700;color:var(--teal-dark);">${escapeHtml(c.customerId)}</span></td>
+            <td style="font-weight:600;">${escapeHtml(c.name)}</td>
+            <td>${escapeHtml(c.mobile)}</td>
+            <td>${c.email ? escapeHtml(c.email) : '<span style="color:var(--text-light);">—</span>'}</td>
             <td>
-              <span class="badge badge-green">Active</span>
-            </td>
+
+  <div
+    style="
+      display:flex;
+      gap:0.5rem;
+    "
+  >
+
+    <button
+
+      class="btn btn-sm"
+
+      style="
+        background:#d6f5e8;
+        border:1px solid #8be0b4;
+      "
+
+      onclick="
+        viewCustomer('${c._id}')
+      "
+    >
+      View
+    </button>
+
+    <button
+
+      class="btn btn-sm"
+
+      style="
+        background:#fff3cd;
+        border:1px solid #ffe69c;
+      "
+
+      onclick="
+        editCustomer('${c._id}')
+      "
+    >
+      Edit
+    </button>
+
+    <button
+
+      class="btn btn-sm"
+
+      style="
+        background:#e3f2fd;
+        border:1px solid #90caf9;
+        color:#1565c0;
+      "
+
+      onclick="
+        openResetPasswordModal('${c._id}')
+      "
+    >
+      Reset Pwd
+    </button>
+
+    <button
+
+      class="btn btn-sm"
+
+      style="
+        background:#ffe2e2;
+        border:1px solid #ffb3b3;
+        color:#c62828;
+      "
+
+      onclick="
+        deleteCustomer('${c._id}')
+      "
+    >
+      Delete
+    </button>
+
+  </div>
+
+</td>
           </tr>`).join('');
       } catch {
         tbody.innerHTML = `<tr><td colspan="5"><div class="empty-state" style="padding:2rem;">⚠️ Could not load customers.</div></td></tr>`;
       }
     }
+async function loadPurchases() {
+  const tbody =
+    document.getElementById(
+      'purchaseTableBody'
+    );
+  try {
+    const res =
+      await fetch(
+        '/admin/purchases'
+      );
+    const data =
+      await res.json();
+    const purchases =
+      data.purchases || [];
+    if (!purchases.length) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7">
+            No Purchases Found
+          </td>
+        </tr>
+      `;
+      return;
+    }
+    tbody.innerHTML =
+      purchases.map(p => `
+        <tr>
+          <td>
+            ${escapeHtml(p.orderId)}
+          </td>
+          <td>
+            ${escapeHtml(p.userId?.name || '')}
+            <br>
+            <small>
+              ${escapeHtml(p.userId?.mobile || '')}
+            </small>
+          </td>
+          <td>
+            ${escapeHtml(p.productName)}
+          </td>
+          <td>
+            ₹${p.price}
+          </td>
+          <td>
+            ${new Date(
+              p.purchaseDate
+            ).toLocaleDateString(
+              'en-IN'
+            )}
+          </td>
+          <td>
+            ${p.warrantyYears}
+            Years
+          </td>
+          <td>
+            <button
+              class="btn btn-sm"
+              onclick="
+                viewPurchase(
+                  '${p._id}'
+                )
+              "
+            >
+              View
+            </button>
+            <button
+              class="btn btn-sm"
+              onclick="
+                editPurchase(
+                  '${p._id}'
+                )
+              "
+            >
+              Edit
+            </button>
+            <button
+              class="btn btn-sm"
+              onclick="
+                deletePurchase(
+                  '${p._id}'
+                )
+              "
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      `).join('');
+  } catch (error) {
+    console.error(error);
+  }
+}
+    // Load Purchases
+    async function loadPurchases() {
 
+  const tbody =
+    document.getElementById(
+      'purchaseTableBody'
+    );
+
+  try {
+
+    const res =
+      await fetch(
+        '/admin/purchases'
+      );
+
+    const data =
+      await res.json();
+
+    const purchases =
+      data.purchases || [];
+
+    if (!purchases.length) {
+
+      tbody.innerHTML = `
+
+        <tr>
+
+          <td colspan="7">
+
+            No Purchases Found
+
+          </td>
+
+        </tr>
+
+      `;
+
+      return;
+    }
+
+    tbody.innerHTML =
+      purchases.map(p => `
+
+        <tr>
+
+          <td>
+
+            ${escapeHtml(p.orderId)}
+
+          </td>
+
+          <td>
+
+            ${escapeHtml(p.userId?.name || '')}
+
+            <br>
+
+            <small>
+
+              ${escapeHtml(p.userId?.mobile || '')}
+
+            </small>
+
+          </td>
+
+          <td>
+
+            ${escapeHtml(p.productName)}
+
+          </td>
+
+          <td>
+
+            ₹${p.price}
+
+          </td>
+
+          <td>
+
+            ${new Date(
+              p.purchaseDate
+            ).toLocaleDateString(
+              'en-IN'
+            )}
+
+          </td>
+
+          <td>
+
+            ${p.warrantyYears}
+            Years
+
+          </td>
+
+          <td>
+
+            <button
+
+              class="btn btn-sm"
+
+              onclick="
+                viewPurchase(
+                  '${p._id}'
+                )
+              "
+            >
+              View
+            </button>
+
+            <button
+
+              class="btn btn-sm"
+
+              onclick="
+                editPurchase(
+                  '${p._id}'
+                )
+              "
+            >
+              Edit
+            </button>
+
+            <button
+
+              class="btn btn-sm"
+
+              onclick="
+                deletePurchase(
+                  '${p._id}'
+                )
+              "
+            >
+              Delete
+            </button>
+
+          </td>
+
+        </tr>
+
+      `).join('');
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
     // ─── Load Service Requests ───────────────────────────────────
     async function loadServiceRequests() {
       const cont = document.getElementById('serviceRequestsContent');
@@ -469,24 +1317,187 @@
                 </tr>
               </thead>
               <tbody>
-                ${reqs.map(r => `
-                  <tr>
-                    <td style="font-weight:700;color:var(--teal-dark);">${r.id}</td>
-                    <td>${r.customerId}</td>
-                    <td>${r.purchaseId}</td>
-                    <td style="font-size:0.82rem;max-width:160px;">${r.productName}</td>
-                    <td style="font-size:0.82rem;max-width:200px;">${r.issue}</td>
-                    <td>${r.createdAt}</td>
-                    <td><span class="badge badge-orange">⏳ Pending</span></td>
-                  </tr>`).join('')}
-              </tbody>
+
+  ${reqs.map(r => `
+
+    <tr>
+
+      <td
+        style="
+          font-weight:700;
+          color:var(--teal-dark);
+        "
+      >
+        ${escapeHtml(r.requestId)}
+      </td>
+
+      <td>
+
+        <div
+          style="
+            font-weight:600;
+          "
+        >
+          ${escapeHtml(r.customerName)}
+        </div>
+
+        <div
+          style="
+            font-size:0.75rem;
+            color:gray;
+          "
+        >
+          ${escapeHtml(r.customerMobile)}
+        </div>
+
+      </td>
+
+      <td>
+        ${escapeHtml(r.purchaseId)}
+      </td>
+
+      <td
+        style="
+          font-size:0.82rem;
+          max-width:160px;
+        "
+      >
+        ${escapeHtml(r.productName)}
+      </td>
+
+      <td
+        style="
+          font-size:0.82rem;
+          max-width:200px;
+        "
+      >
+        ${escapeHtml(r.issue)}
+      </td>
+
+      <td>
+        ${new Date(r.createdAt)
+          .toLocaleDateString('en-IN')}
+      </td>
+
+      <td>
+
+        <select
+
+          style="
+            padding:8px 12px;
+            border-radius:8px;
+            border:1px solid #ccc;
+            background:#fff;
+            min-width:170px;
+            cursor:pointer;
+            font-weight:600;
+          "
+
+          onchange="
+            updateRequestStatus(
+              '${r._id}',
+              this.value
+            )
+          "
+        >
+
+          <option
+            value="Pending"
+            ${r.status === 'Pending'
+              ? 'selected'
+              : ''}
+          >
+            Pending
+          </option>
+
+          <option
+            value="In Review"
+            ${r.status === 'In Review'
+              ? 'selected'
+              : ''}
+          >
+            In Review
+          </option>
+
+          <option
+            value="Technician Assigned"
+            ${r.status === 'Technician Assigned'
+              ? 'selected'
+              : ''}
+          >
+            Technician Assigned
+          </option>
+
+          <option
+            value="Resolved"
+            ${r.status === 'Resolved'
+              ? 'selected'
+              : ''}
+          >
+            Resolved
+          </option>
+
+        </select>
+
+      </td>
+
+    </tr>
+
+  `).join('')}
+
+</tbody>
             </table>
           </div>`;
       } catch {
         cont.innerHTML = `<div class="empty-state" style="padding:2.5rem;">⚠️ Could not load service requests.</div>`;
       }
     }
+async function updateRequestStatus(
+  id,
+  status
+) {
 
+  try {
+
+    const res = await fetch(
+
+      `/admin/update-request-status/${id}`,
+
+      {
+
+        method: 'PUT',
+
+        headers: {
+          'Content-Type':
+            'application/json'
+        },
+
+        body: JSON.stringify({
+          status
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+
+      showToast(
+        'Request status updated!',
+        'success'
+      );
+
+      loadServiceRequests();
+    }
+
+  } catch {
+
+    showToast(
+      'Failed to update status',
+      'error'
+    );
+  }
+}
     // ─── Load Products (Admin View) ──────────────────────────────
     async function loadAdminProducts() {
       const tbody = document.getElementById('productsAdminBody');
@@ -497,28 +1508,918 @@
 
         tbody.innerHTML = prods.map(p => `
           <tr>
-            <td style="font-weight:700;color:var(--teal-dark);">${p.id}</td>
+            <td style="font-weight:700;color:var(--teal-dark);">${escapeHtml(p.productId)}</td>
             <td>
-              <div style="font-weight:600;font-size:0.88rem;">${p.name}</div>
-              <div style="font-size:0.75rem;color:var(--text-light);">${p.tagline}</div>
+              <div style="font-weight:600;font-size:0.88rem;">${escapeHtml(p.name)}</div>
+              <div style="font-size:0.75rem;color:var(--text-light);">${escapeHtml(p.tagline)}</div>
             </td>
-            <td><span class="badge badge-blue">${p.category}</span></td>
+            <td><span class="badge badge-blue">${escapeHtml(p.category)}</span></td>
             <td style="font-weight:600;">${formatPrice(p.price)}</td>
-            <td>${p.warranty}</td>
+            <td>${p.warrantyYears}</td>
             <td>
-              <span style="color:#f4a535;font-size:0.9rem;">★</span>
-              <span style="font-weight:600;font-size:0.85rem;">${p.rating}</span>
-              <span style="font-size:0.75rem;color:var(--text-light);">(${p.reviews})</span>
-            </td>
+                <div
+                    style="display:flex;
+                           gap:0.5rem;"
+                >
+
+    <button
+
+      class="btn btn-sm"
+
+      style="
+        background:#fff3cd;
+        border:1px solid #ffe69c;
+      "
+
+      onclick="
+        editProduct('${p._id}')
+      "
+    >
+      Edit
+    </button>
+
+    <button
+
+      class="btn btn-sm"
+
+      style="
+        background:#ffe2e2;
+        border:1px solid #ffb3b3;
+        color:#c62828;
+      "
+
+      onclick="
+        deleteProduct('${p._id}')
+      "
+    >
+      Delete
+    </button>
+
+  </div>
+
+</td>
           </tr>`).join('');
       } catch {
         tbody.innerHTML = `<tr><td colspan="6"><div class="empty-state" style="padding:2rem;">⚠️ Could not load products.</div></td></tr>`;
       }
     }
+    // ─── Add Product ─────────────────────────────────────────────
+    function previewImage(input, imgId) {
+      const img  = document.getElementById(imgId);
+      const file = input.files[0];
+      if (!file) { img.style.display = 'none'; return; }
+      img.src = URL.createObjectURL(file);
+      img.style.display = 'block';
+    }
 
+    function resetAddProductForm() {
+      document.getElementById('addProdName').value        = '';
+      document.getElementById('addProdTagline').value     = '';
+      document.getElementById('addProdCategory').value    = '';
+      document.getElementById('addProdPrice').value        = '';
+      document.getElementById('addProdDiscount').value    = '0';
+      document.getElementById('addProdWarranty').value    = '10';
+      document.getElementById('addProdStock').value        = '0';
+      document.getElementById('addProdBaseWidth').value   = '60';
+      document.getElementById('addProdBaseLength').value  = '78';
+      document.getElementById('addProdDescription').value = '';
+      document.getElementById('addProdFeatures').value    = '';
+      document.getElementById('addProdLayers').value      = '';
+      document.getElementById('addProdImage').value        = '';
+      document.getElementById('addProdImagePreview').style.display = 'none';
+      document.getElementById('addProdError').style.display   = 'none';
+      document.getElementById('addProdSuccess').style.display = 'none';
+    }
+
+    async function addProduct() {
+      const name        = document.getElementById('addProdName').value.trim();
+      const tagline     = document.getElementById('addProdTagline').value.trim();
+      const category    = document.getElementById('addProdCategory').value;
+      const price       = document.getElementById('addProdPrice').value;
+      const discount    = document.getElementById('addProdDiscount').value;
+      const warranty    = document.getElementById('addProdWarranty').value;
+      const stock       = document.getElementById('addProdStock').value;
+      const baseWidth   = document.getElementById('addProdBaseWidth').value;
+      const baseLength  = document.getElementById('addProdBaseLength').value;
+      const description = document.getElementById('addProdDescription').value.trim();
+      const features    = document.getElementById('addProdFeatures').value;
+      const layers      = document.getElementById('addProdLayers').value;
+      const imageFile   = document.getElementById('addProdImage').files[0];
+      const errBox      = document.getElementById('addProdError');
+      const sucBox      = document.getElementById('addProdSuccess');
+      const btn         = document.getElementById('addProdSubmitBtn');
+
+      errBox.style.display = 'none';
+      sucBox.style.display = 'none';
+
+      if (!name || !category || !price) {
+        errBox.textContent   = '⚠️ Name, category, and price are required.';
+        errBox.style.display = 'block';
+        return;
+      }
+      if (Number(price) <= 0) {
+        errBox.textContent   = '⚠️ Price must be greater than zero.';
+        errBox.style.display = 'block';
+        return;
+      }
+      if (Number(baseWidth) <= 0 || Number(baseLength) <= 0) {
+        errBox.textContent   = '⚠️ Base width and length must be greater than zero.';
+        errBox.style.display = 'block';
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('tagline', tagline);
+      formData.append('category', category);
+      formData.append('price', price);
+      formData.append('discount', discount || 0);
+      formData.append('warrantyYears', warranty || 10);
+      formData.append('stock', stock || 0);
+      formData.append('baseWidth', baseWidth || 60);
+      formData.append('baseLength', baseLength || 78);
+      formData.append('description', description);
+      formData.append('featuresText', features);
+      formData.append('layersText', layers);
+      if (imageFile) formData.append('image', imageFile);
+
+      btn.disabled    = true;
+      btn.textContent = 'Adding...';
+
+      try {
+        const res  = await fetch('/admin/add-product', { method: 'POST', body: formData });
+        const data = await res.json();
+
+        if (data.success) {
+          resetAddProductForm();
+          sucBox.textContent   = `✅ Product added! ID: ${data.product.productId}`;
+          sucBox.style.display = 'block';
+          showToast(`Product ${data.product.productId} added!`, 'success');
+        } else {
+          errBox.textContent   = '⚠️ ' + (data.message || 'Failed to add product.');
+          errBox.style.display = 'block';
+        }
+      } catch {
+        errBox.textContent   = '⚠️ Server error. Please try again.';
+        errBox.style.display = 'block';
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = 'Add Product →';
+      }
+    }
+
+    function openProductModal() {
+
+  document.getElementById(
+    'productModal'
+  ).style.display = 'flex';
+}
+
+
+function closeProductModal() {
+
+  document.getElementById(
+    'productModal'
+  ).style.display = 'none';
+}
+
+
+async function saveProductEdit() {
+
+  const editId =
+    document.getElementById(
+      'editProductId'
+    ).value;
+
+  if (!editId) return;
+
+  const formData = new FormData();
+  formData.append('name', document.getElementById('prodName').value.trim());
+  formData.append('tagline', document.getElementById('prodTagline').value.trim());
+  formData.append('category', document.getElementById('prodCategory').value);
+  formData.append('price', document.getElementById('prodPrice').value);
+  formData.append('discount', document.getElementById('prodDiscount').value);
+  formData.append('warrantyYears', document.getElementById('prodWarranty').value);
+  formData.append('stock', document.getElementById('prodStock').value);
+  formData.append('baseWidth', document.getElementById('prodBaseWidth').value);
+  formData.append('baseLength', document.getElementById('prodBaseLength').value);
+  formData.append('description', document.getElementById('prodDescription').value.trim());
+  formData.append('featuresText', document.getElementById('prodFeatures').value);
+  formData.append('layersText', document.getElementById('prodLayers').value);
+
+  const imageFile = document.getElementById('prodImageFile').files[0];
+  if (imageFile) formData.append('image', imageFile);
+
+  try {
+
+    const res = await fetch(
+
+      `/admin/update-product/${editId}`,
+
+      {
+        method: 'PUT',
+        body: formData
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+
+      showToast('Product Updated!', 'success');
+
+      closeProductModal();
+
+      loadAdminProducts();
+
+    } else {
+
+      showToast(data.message || 'Failed to update product', 'error');
+    }
+
+  } catch {
+
+    showToast(
+      'Failed to update product',
+      'error'
+    );
+  }
+}
+
+
+async function deleteProduct(id) {
+
+  if (!confirm(
+    'Delete this product?'
+  )) return;
+
+  try {
+
+    const res = await fetch(
+
+      `/admin/delete-product/${id}`,
+
+      {
+        method:'DELETE'
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.success) {
+
+      showToast(
+        'Product Deleted',
+        'success'
+      );
+
+      loadAdminProducts();
+    }
+
+  } catch {
+
+    showToast(
+      'Delete failed',
+      'error'
+    );
+  }
+}
+
+
+async function editProduct(id) {
+
+  try {
+
+    const res =
+      await fetch('/api/products');
+
+    const data =
+      await res.json();
+
+    const product =
+      data.products.find(
+        p => p._id === id
+      );
+
+    if (!product) return;
+
+    document.getElementById(
+      'editProductId'
+    ).value = product._id;
+
+    document.getElementById(
+      'prodName'
+    ).value = product.name;
+
+    document.getElementById(
+      'prodTagline'
+    ).value = product.tagline || '';
+
+    document.getElementById(
+      'prodCategory'
+    ).value = product.category;
+
+    document.getElementById(
+      'prodPrice'
+    ).value = product.price;
+
+    document.getElementById(
+      'prodDiscount'
+    ).value = product.discount;
+
+    document.getElementById(
+      'prodWarranty'
+    ).value = product.warrantyYears;
+
+    document.getElementById(
+      'prodStock'
+    ).value = product.stock;
+
+    document.getElementById(
+      'prodBaseWidth'
+    ).value = product.baseWidth;
+
+    document.getElementById(
+      'prodBaseLength'
+    ).value = product.baseLength;
+
+    document.getElementById(
+      'prodDescription'
+    ).value = product.description;
+
+    document.getElementById(
+      'prodFeatures'
+    ).value = (product.features || []).join('\n');
+
+    document.getElementById(
+      'prodLayers'
+    ).value = (product.layers || []).join('\n');
+
+    document.getElementById(
+      'prodImageFile'
+    ).value = '';
+
+    const preview = document.getElementById('prodImagePreview');
+    if (product.image) {
+      preview.src = product.image;
+      preview.style.display = 'block';
+    } else {
+      preview.style.display = 'none';
+    }
+
+    openProductModal();
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
+async function editPurchase(id) {
+
+  try {
+
+    const res =
+      await fetch(
+        `/admin/purchase/${id}`
+      );
+
+    const data =
+      await res.json();
+
+    const p =
+      data.purchase;
+
+    document.getElementById(
+      'editPurchaseId'
+    ).value = p._id;
+
+    document.getElementById(
+      'editPurCustomerId'
+    ).value = p.userId;
+
+    document.getElementById(
+      'editPurProduct'
+    ).value = p.productName;
+
+    document.getElementById(
+      'editPurPrice'
+    ).value = p.price;
+
+    document.getElementById(
+      'editPurSize'
+    ).value = p.size || '';
+
+    document.getElementById(
+      'editPurDate'
+    ).value =
+      p.purchaseDate
+      .split('T')[0];
+
+    document.getElementById(
+      'editPurWarranty'
+    ).value =
+      p.warrantyYears;
+
+    document.getElementById(
+      'editPurchaseModal'
+    ).style.display =
+      'flex';
+
+  } catch (error) {
+
+    console.error(error);
+  }
+}
+async function savePurchaseEdit() {
+
+  const id =
+    document.getElementById(
+      'editPurchaseId'
+    ).value;
+
+  const body = {
+
+    userId:
+      document.getElementById(
+      'editPurCustomerId'
+      ).value,
+
+    productName:
+      document.getElementById(
+      'editPurProduct'
+      ).value,
+
+    price:
+      document.getElementById(
+      'editPurPrice'
+      ).value,
+
+    size:
+      document.getElementById(
+      'editPurSize'
+      ).value,
+
+    purchaseDate:
+      document.getElementById(
+      'editPurDate'
+      ).value,
+
+    warrantyYears:
+      document.getElementById(
+      'editPurWarranty'
+      ).value
+  };
+
+  const res =
+    await fetch(
+
+      `/admin/update-purchase/${id}`,
+
+      {
+        method:'PUT',
+
+        headers:{
+          'Content-Type':
+          'application/json'
+        },
+
+        body:
+          JSON.stringify(body)
+      }
+    );
+
+  const data =
+    await res.json();
+
+  if (data.success) {
+
+    closePurchaseModal();
+
+    loadPurchases();
+
+    showToast(
+      'Purchase Updated',
+      'success'
+    );
+  }
+}
+function closePurchaseModal() {
+
+  document.getElementById(
+    'editPurchaseModal'
+  ).style.display =
+    'none';
+}
     // ─── Init ────────────────────────────────────────────────────
     loadDashboardStats();
   </script>
+<div
 
+  id="productModal"
+
+  style="
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+  "
+>
+
+  <div
+
+    style="
+      background:#fff;
+      width:520px;
+      padding:2rem;
+      border-radius:20px;
+      max-height:90vh;
+      overflow:auto;
+    "
+  >
+<input
+  id="editProductId"
+  type="hidden"
+>
+    <h2
+      style="
+        margin-bottom:1.5rem;
+      "
+    >
+      Edit Product
+    </h2>
+
+    <div class="form-group">
+      <label class="form-label">
+        Product Name
+      </label>
+
+      <input
+        id="prodName"
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Tagline
+      </label>
+
+      <input
+        id="prodTagline"
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Category
+      </label>
+
+      <select
+        id="prodCategory"
+        class="form-select"
+      >
+        <option value="Orthopedic">Orthopaedic</option>
+        <option value="Premium">Premium</option>
+        <option value="Luxury">Luxury</option>
+        <option value="Essential">Essential</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Price
+      </label>
+
+      <input
+        id="prodPrice"
+        type="number"
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Discount %
+      </label>
+
+      <input
+        id="prodDiscount"
+        type="number"
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Warranty Years
+      </label>
+
+      <input
+        id="prodWarranty"
+        type="number"
+        class="form-input"
+      >
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Stock
+      </label>
+
+      <input
+        id="prodStock"
+        type="number"
+        class="form-input"
+      >
+    </div>
+
+    <div style="display:flex;gap:1rem;">
+      <div class="form-group" style="flex:1;">
+        <label class="form-label">Base Width (in)</label>
+        <input id="prodBaseWidth" type="number" class="form-input">
+      </div>
+      <div class="form-group" style="flex:1;">
+        <label class="form-label">Base Length (in)</label>
+        <input id="prodBaseLength" type="number" class="form-input">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Product Image
+      </label>
+
+      <input
+        type="file"
+        id="prodImageFile"
+        accept="image/*"
+        onchange="previewImage(this, 'prodImagePreview')"
+>
+      <img id="prodImagePreview" style="display:none;margin-top:10px;max-width:140px;border-radius:8px;border:1px solid var(--border);">
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">
+        Description
+      </label>
+
+      <textarea
+        id="prodDescription"
+        class="form-input"
+      ></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Key Features (one per line)</label>
+      <textarea id="prodFeatures" class="form-input" rows="3"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Foam Layer Composition (one per line)</label>
+      <textarea id="prodLayers" class="form-input" rows="3"></textarea>
+    </div>
+
+    <div
+      style="
+        display:flex;
+        gap:1rem;
+      "
+    >
+
+      <button
+        class="btn btn-primary"
+        onclick="saveProductEdit()"
+      >
+        Save Changes
+      </button>
+
+      <button
+        class="btn"
+        onclick="closeProductModal()"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+<div
+  id="editCustomerModal"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+  "
+>
+
+  <div
+    style="
+      background:white;
+      width:500px;
+      padding:2rem;
+      border-radius:16px;
+    "
+  >
+
+    <h2>Edit Customer</h2>
+
+    <input
+      id="editCustomerId"
+      type="hidden"
+    >
+
+    <div class="form-group">
+
+      <label>Name</label>
+
+      <input
+        id="editCustomerName"
+        class="form-input"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Mobile</label>
+
+      <input
+        id="editCustomerMobile"
+        class="form-input"
+      >
+
+    </div>
+
+    <div class="form-group">
+
+      <label>Email</label>
+
+      <input
+        id="editCustomerEmail"
+        class="form-input"
+      >
+
+    </div>
+
+    <div
+      style="
+        display:flex;
+        gap:1rem;
+      "
+    >
+
+      <button
+        class="btn btn-primary"
+        onclick="saveCustomerChanges()"
+      >
+        Save
+      </button>
+
+      <button
+        class="btn"
+        onclick="closeEditCustomerModal()"
+      >
+        Cancel
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+<div
+  id="resetPasswordModal"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.5);
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+  "
+>
+
+  <div
+    style="
+      background:white;
+      width:440px;
+      padding:2rem;
+      border-radius:16px;
+    "
+  >
+
+    <h2>Reset Password</h2>
+    <p style="font-size:0.85rem;color:var(--text-light);margin-bottom:1rem;" id="resetPwdCustomerName"></p>
+
+    <input id="resetPwdCustomerId" type="hidden">
+
+    <div id="resetPwdError" class="auth-error"></div>
+
+    <div class="form-group">
+      <label class="form-label">New Password</label>
+      <input id="resetPwdNewPassword" type="text" class="form-input" placeholder="At least 6 characters">
+    </div>
+
+    <div style="display:flex;gap:1rem;">
+      <button class="btn btn-primary" onclick="submitResetPassword()">Reset Password</button>
+      <button class="btn" onclick="closeResetPasswordModal()">Cancel</button>
+    </div>
+
+  </div>
+
+</div>
+<div id="editPurchaseModal"
+style="
+display:none;
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.5);
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+  <div
+style="
+background:white;
+width:600px;
+padding:2rem;
+border-radius:16px;
+max-height:90vh;
+overflow:auto;
+">
+
+    <h2>Edit Purchase</h2>
+
+<input type="hidden" id="editPurchaseId">
+
+<div class="form-group">
+  <label>Customer ID</label>
+  <input id="editPurCustomerId" class="form-input">
+</div>
+
+<div class="form-group">
+  <label>Product Name</label>
+  <input id="editPurProduct" class="form-input">
+</div>
+
+<div class="form-group">
+  <label>Price</label>
+  <input id="editPurPrice"
+         type="number"
+         class="form-input">
+</div>
+
+<div class="form-group">
+  <label>Size</label>
+  <input id="editPurSize"
+         class="form-input">
+</div>
+
+<div class="form-group">
+  <label>Purchase Date</label>
+  <input id="editPurDate"
+         type="date"
+         class="form-input">
+</div>
+
+<div class="form-group">
+  <label>Warranty Years</label>
+  <input id="editPurWarranty"
+         type="number"
+         class="form-input">
+</div>
+
+<div style="display:flex;gap:1rem;margin-top:20px;">
+
+  <button
+    class="btn btn-primary"
+    onclick="savePurchaseEdit()">
+    Save Changes
+  </button>
+
+  <button
+    class="btn"
+    onclick="closePurchaseModal()">
+    Cancel
+  </button>
+
+</div>
+
+  </div>
+
+
+</div>
 </body>
 </html>

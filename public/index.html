@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>NidraPrime — Sleep Better, Live Better</title>
+  <meta name="description" content="NidraPrime crafts premium orthopedic mattresses engineered for better sleep and lasting comfort. Explore certified foam mattresses trusted by thousands across India.">
+  <link rel="icon" href="/nplogodevice.png">
   <link rel="stylesheet" href="/style.css">
 </head>
 <body>
@@ -11,8 +13,8 @@
   <!-- NAVBAR -->
   <nav class="navbar" id="navbar">
     <a href="/" class="nav-logo">
-      <div class="logo-icon">🛏️</div>
-      <span class="logo-text">Nidra<span>Prime</span></span>
+  <img src="/nplogodevice.png" alt="NidraPrime Logo" class="brand-logo">
+  <span class="logo-text">Nidra<span>Prime</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="/" class="active">Home</a></li>
@@ -33,15 +35,16 @@
     <div class="hero-pattern"></div>
     <div class="hero-content">
       <div class="hero-text">
-        <div class="hero-badge">✦ India's Most Trusted Orthopedic Brand</div>
+        <div class="hero-badge">✦ Prime Comfort For Every Sleep</div>
         <h1 class="hero-title">
           Wake Up to<br>
           <em>Better Health</em><br>
           Every Morning
         </h1>
         <p class="hero-subtitle">
-          Engineered by India's foremost sleep scientists with 26 years of orthopedic expertise.
-          Every NidraPrime mattress is built to transform your sleep — scientifically, sustainably, and luxuriously.
+          Crafted from years of real customer experience and trusted comfort expertise, every <span class="brand-name">
+  Nidra<span class="brand-highlight">Prime</span>
+</span> mattress is designed to deliver better sleep, lasting support, and everyday luxury.
         </p>
         <div class="hero-actions">
           <a href="/products.html" class="btn btn-primary">Explore Mattresses →</a>
@@ -62,13 +65,13 @@
           </div>
         </div>
       </div>
-      <div class="hero-visual">
-        <div class="hero-card">
-          <img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600" alt="OrthoCloud 7000" class="hero-card-img">
-          <div class="hero-card-tag">⭐ Best Seller · Orthopedic</div>
-          <div class="hero-card-name">OrthoCloud 7000</div>
-          <div class="hero-card-price">₹28,999 <span>₹38,000</span></div>
-        </div>
+      <div class="hero-visual" id="heroVisual" style="display:none;">
+        <a class="hero-card" id="heroProductCard" href="/products.html">
+          <img id="heroProductImg" src="" alt="" class="hero-card-img">
+          <div class="hero-card-tag" id="heroProductTag">⭐ Best Seller</div>
+          <div class="hero-card-name" id="heroProductName"></div>
+          <div class="hero-card-price" id="heroProductPrice"></div>
+        </a>
       </div>
     </div>
   </section>
@@ -115,7 +118,7 @@
     <div class="section-inner">
       <div class="story-grid">
         <div class="story-visual">
-          <img src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=700" alt="NidraPrime Craftsmanship" class="story-img">
+          <img src="/homepagemain.png" alt="NidraPrime Craftsmanship" class="story-img">
           <div class="story-badge-float">
             <div class="story-badge-num">26</div>
             <div class="story-badge-text">Years of Excellence</div>
@@ -125,14 +128,14 @@
           <div class="section-tag" style="color: var(--gold);">Our Story</div>
           <h2 class="section-title light">Built on Science.<br>Driven by Sleep.</h2>
           <p class="section-subtitle light" style="margin-bottom: 1.5rem;">
-            NidraPrime was founded by Amit Kumar Jain in 1998 with one mission — to bring orthopedic-grade sleep quality to every Indian household.
+            NidraPrime is founded by Amit Kumar Jain with one mission — to bring orthopedic-grade sleep quality to every Indian household.
           </p>
           <ul class="story-list">
             <li>Certified orthopedic foam from ISO-accredited facilities</li>
             <li>Multi-layer precision engineering for lumbar support</li>
             <li>CertiPUR-US certified — no harmful chemicals</li>
             <li>Temperature-regulating materials for India's climate</li>
-            <li>Over 50,000 satisfied customers across 300+ cities</li>
+            <li>Over 50,000 satisfied customers across cities</li>
           </ul>
           <div style="margin-top: 2rem;">
             <a href="/about.html" class="btn btn-primary">Discover Our Story →</a>
@@ -185,7 +188,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="footer-logo-text">Nidra<span>Prime</span></div>
-          <p class="footer-desc">India's leading orthopedic mattress brand, crafting science-backed sleep solutions since 1998. Over 50,000 families sleep better with NidraPrime.</p>
+          <p class="footer-desc">India's leading orthopedic mattress brand, crafting science-backed sleep solutions. Over 50,000 families sleep better with NidraPrime.</p>
           <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
             <span class="cert-badge">CertiPUR-US</span>
             <span class="cert-badge">ISO 9001</span>
@@ -207,13 +210,13 @@
             <li><a href="/about.html">About Us</a></li>
             <li><a href="/materials.html">Our Materials</a></li>
             <li><a href="/contact.html">Contact</a></li>
-            <li><a href="/admin_login.html">Admin</a></li>
           </ul>
         </div>
         <div>
           <div class="footer-col-title">Support</div>
           <ul class="footer-links">
             <li><a href="/customer_login.html">My Account</a></li>
+            <li><a href="/warranty.html">Warranty Terms</a></li>
             <li><a href="/customer_login.html">Warranty Claims</a></li>
             <li><a href="/contact.html">Service Centers</a></li>
             <li><a href="/contact.html">Dealer Enquiry</a></li>
@@ -221,14 +224,12 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <span>© 2024 NidraPrime. All rights reserved.</span>
-        <div class="footer-cert">
-          <span>Founded by Amit Kumar Jain · Jaipur, Rajasthan</span>
-        </div>
+        <span>© 2026 NidraPrime. All rights reserved.</span>
       </div>
     </div>
   </footer>
 
+  <script src="/auth-nav.js"></script>
   <script>
     // Navbar scroll effect
     window.addEventListener('scroll', () => {
@@ -239,6 +240,39 @@
     document.getElementById('hamburger').addEventListener('click', () => {
       document.getElementById('navLinks').classList.toggle('open');
     });
+
+    // Hero product card — show a real best-seller, never a fake one
+    (async function loadHeroProduct() {
+      try {
+        const res  = await fetch('/api/products');
+        const data = await res.json();
+        const products = data.products || [];
+        if (!products.length) return;
+
+        const best = products.slice().sort((a, b) => {
+          if (b.rating !== a.rating) return b.rating - a.rating;
+          return (b.reviews || 0) - (a.reviews || 0);
+        })[0];
+
+        document.getElementById('heroProductCard').href = `/product.html?id=${encodeURIComponent(best._id)}`;
+        document.getElementById('heroProductImg').src   = best.image;
+        document.getElementById('heroProductImg').alt   = best.name;
+        document.getElementById('heroProductTag').textContent  = `⭐ Best Seller · ${best.category}`;
+        document.getElementById('heroProductName').textContent = best.name;
+
+        const price = '₹' + Number(best.price).toLocaleString('en-IN');
+        let priceHtml = price;
+        if (best.discount > 0) {
+          const original = Math.round(best.price / (1 - best.discount / 100));
+          priceHtml += ` <span>₹${original.toLocaleString('en-IN')}</span>`;
+        }
+        document.getElementById('heroProductPrice').innerHTML = priceHtml;
+
+        document.getElementById('heroVisual').style.display = 'flex';
+      } catch {
+        // keep hero visual hidden if products can't be loaded
+      }
+    })();
   </script>
 </body>
 </html>
